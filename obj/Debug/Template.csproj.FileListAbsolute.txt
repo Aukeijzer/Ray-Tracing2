@@ -20,3 +20,14 @@ C:\Users\Max\GitKrakenFiles\Ray-Tracing2\obj\Debug\Template.csproj.CoreCompileIn
 C:\Users\Max\GitKrakenFiles\Ray-Tracing2\obj\Debug\Template.csproj.CopyComplete
 C:\Users\Max\GitKrakenFiles\Ray-Tracing2\obj\Debug\INFOGR2019Tmpl8.exe
 C:\Users\Max\GitKrakenFiles\Ray-Tracing2\obj\Debug\INFOGR2019Tmpl8.pdb
+C:\Users\auker\Documents\GitHub\Ray Tracing\obj\Debug\Template.csprojAssemblyReference.cache
+C:\Users\auker\Documents\GitHub\Ray Tracing\obj\Debug\Template.csproj.CoreCompileInputs.cache
+C:\Users\auker\Documents\GitHub\Ray Tracing\obj\Debug\INFOGR2019Tmpl8.exe
+C:\Users\auker\Documents\GitHub\Ray Tracing\obj\Debug\INFOGR2019Tmpl8.pdb
+C:\Users\auker\Documents\GitHub\Ray Tracing\bin\Debug\INFOGR2019Tmpl8.exe.config
+C:\Users\auker\Documents\GitHub\Ray Tracing\bin\Debug\INFOGR2019Tmpl8.exe
+C:\Users\auker\Documents\GitHub\Ray Tracing\bin\Debug\INFOGR2019Tmpl8.pdb
+C:\Users\auker\Documents\GitHub\Ray Tracing\bin\Debug\OpenTK.dll
+C:\Users\auker\Documents\GitHub\Ray Tracing\bin\Debug\OpenTK.pdb
+C:\Users\auker\Documents\GitHub\Ray Tracing\bin\Debug\OpenTK.xml
+C:\Users\auker\Documents\GitHub\Ray Tracing\obj\Debug\Template.csproj.CopyComplete
