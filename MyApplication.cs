@@ -9,35 +9,11 @@ namespace Template
 		Vector3 D;	//direction
 		float t;	//distance
     }
-
-	class camera
-	{
-		public Vector3 E;
-		public float fov;
-		public Vector3 p0 = new Vector3(1, 1, 0);
-		public Vector3 p1 = new Vector3(-1, 1, 0);
-		public Vector3 p2 = new Vector3(1, -1, 0);
-
-		public camera(Vector3 e, float fieldofview)
-		{
-			E = e;				//camera position
-			fov = fieldofview;  //field of view
-
-		}
-
-		public Vector3 GetP(float u, float v)
-        {
-			Vector3 P;
-			P = p0 + u * (p1 - p0) + v * (p2 - p0);
-			return P;
-        }
-
-	}
-
 	class MyApplication
 	{
 		// member variables
 		public Surface screen, debugScreen, rtScreen;
+		public camera camera;
 		// initialize
 		Surface map;
 		public Vector3[] pixels;
@@ -56,13 +32,14 @@ namespace Template
 			rtScreen.CopyTo(screen, 0, 0);
 			debugScreen.CopyTo(screen, 512, 0);
 			for (int y = 0; y < 512; y++)
-            {
+			{
 				for (int x = 0; x < 512; x++)
-                {
+				{
 					//
 					float u = (float)x / 512;
 					float v = (float)y / 512;
-
+				}
+			}
 					/*
 					Vector3 P = camera.GetP(u, v);
 
@@ -77,7 +54,7 @@ namespace Template
                         {
 							...
                         }
-					*/
+					
                     }
                 }
 				for (int x=512; x < 1024; x++)
@@ -90,7 +67,7 @@ namespace Template
 				rtScreen.pixels[i] = MixColor(f2intcolor(hdr.X), f2intcolor(hdr.Y), f2intcolor(hdr.Z));
 			}*/
 		
-            }
+        }
 		
 		//returns the color in one int.
 		static int MixColor(int red, int green, int blue)
