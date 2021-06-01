@@ -226,6 +226,14 @@ namespace Template
 					{
 						Vector3 color = intersection.obj.rgbcolor;
 						pixels[i] = primitive.vec2intcolor(color);
+						foreach (light lightray in scene.lightSources)
+						{
+							ray temp = new ray(intersection.point, lightray.pos - intersection.point);
+							if (scene.calcIntersection(temp).intersection == true)
+							{
+								color = new Vector3(0, 0, 0);
+							}
+						}
 
 					}
 					else { pixels[i] = 0xffffff; }

@@ -52,18 +52,19 @@ namespace Template
 	}
 	public class scene
 	{
-		public sphere s1;
-		public sphere s2;
-		public sphere s3;
 		//s list of all primitives in the scene
 		public List<primitive> primitives = new List<primitive>();
-		public List<light> lights = new List<light>();
+		public List<light> lightSources = new List<light>();
 		public camera camera;
 		public scene()
 		{
-			s1 = new sphere(new Vector3(2, 0, 5), 1f);
-			s2 = new sphere(new Vector3(0, 0, 5), 1f);
-			s3 = new sphere(new Vector3(-2, 0, 5), 1f);
+			sphere s1 = new sphere(new Vector3(2, 0, 5), 1f);
+			sphere s2 = new sphere(new Vector3(0, 0, 5), 1f);
+			sphere s3 = new sphere(new Vector3(-2, 0, 5), 1f);
+			light l1 = new light(new Vector3(9, 9, 1), 1f);
+			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);
+			lightSources.Add(l1);
+			lightSources.Add(l2);
 			primitives.Add(s1);
 			primitives.Add(s2);
 			primitives.Add(s3);
