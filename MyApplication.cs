@@ -20,6 +20,8 @@ namespace Template
 			pixels = new Vector3[512 * 512];
 		}
 
+
+
 		// tick: renders one frame
 		public void Tick()
 		{
