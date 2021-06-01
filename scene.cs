@@ -15,7 +15,7 @@ namespace Template
 		public ray(Vector3 origin, Vector3 direction)
         {
 			O = origin;
-			D = direction;
+			D = direction.Normalized();
 			t = 1e37f;
         }
 	}
@@ -55,6 +55,7 @@ namespace Template
 		public sphere s1;
 		public sphere s2;
 		public sphere s3;
+		//s list of all primitives in the scene
 		public List<primitive> primitives = new List<primitive>();
 		public List<light> lights = new List<light>();
 		public camera camera;
