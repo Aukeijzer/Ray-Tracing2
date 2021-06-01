@@ -47,15 +47,6 @@ namespace Template
 	}*/
 
 		}
-	//returns the color in one int.
-	static int MixColor(int red, int green, int blue)
-    { 
-		return (red << 16) + (green << 8) + blue;
-	}
-	static int f2intcolor(float color)
-	{
-		return Math.Min((int)color * 256, 255);
-	}
 	int TX(float x)
 	{
 		x += 2;

@@ -12,6 +12,12 @@ namespace Template
 		public Vector3 O;  //origin
 		public Vector3 D;  //direction
 		public float t;    //distance
+		public ray(Vector3 origin, Vector3 direction)
+        {
+			O = origin;
+			D = direction;
+			t = 1e37f;
+        }
 	}
 
 	public class camera
@@ -23,6 +29,7 @@ namespace Template
 		public Vector3 p0;  //screen corner
 		public Vector3 p1;  //screen corner
 		public Vector3 p2;  //screen corner
+		public Vector3 p3; //screen corner
 
 		public camera(Vector3 e, float fieldofview, Vector3 viewdirection)
 		{
@@ -33,6 +40,7 @@ namespace Template
 			p0 = C + new Vector3(-1, 1, 0);
 			p1 = C + new Vector3(1, 1, 0);
 			p2 = C + new Vector3(-1, -1, 0);
+			p3 = C + new Vector3(1, -1,0);
 		}   //transform camera by multiplying p0, p1, p2, and E with the camera matrix.
 
 		public Vector3 GetP(float u, float v)
@@ -58,7 +66,7 @@ namespace Template
 			primitives.Add(s2);
 			primitives.Add(s3);
 		}
-		public intersect Intersection(ray r)
+		public intersect calcIntersection(ray r)
 		{
 			bool intersection=false;
 			primitive obj=new primitive();
@@ -92,18 +100,21 @@ namespace Template
 	}
 	public class intersect
     {
-		Vector3 point;
-		primitive obj;
-		ray r;
+		public Vector3 point;
+		public primitive obj;
+		public ray r;
+		public bool intersection;
 		public intersect(Vector3 point,primitive obj, ray r)
 	    {
 			this.point = point;
 			this.obj = obj;
 			this.r = r;
+			this.intersection = true;
         }
 		public intersect(ray r)
         {
 			this.r = r;
+			this.intersection = false;
         }
     }
 

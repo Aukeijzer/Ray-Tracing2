@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
+using OpenTK;
 
 namespace Template
 {
@@ -210,6 +211,26 @@ namespace Template
         }
 		public void drawscene(scene scene)
         {
+			camera camera = scene.camera;
+			Vector3 origin = camera.E;
+			Vector3 direction = camera.p0;
+			Vector3 u=camera.p1-camera.p0;
+			Vector3 v=camera.p2-camera.p0;
+			
+			int i = 0;
+			for (int y=0;y<height;y++) for (int x = 0; x < width; x++)
+                {
+					ray pixelray = new ray(origin, direction + x * u + y * v);
+					intersect intersection = scene.calcIntersection(pixelray);
+					if (intersection.intersection)
+					{
+						Vector3 color = intersection.obj.rgbcolor;
+						pixels[i] = primitive.vec2intcolor(color);
+
+					}
+					else { pixels[i] = 0xffffff; }
+					i++;
+                }
 
         }
 	}
