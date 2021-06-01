@@ -29,7 +29,7 @@ namespace Template
 		public Vector3 p0;  //screen corner
 		public Vector3 p1;  //screen corner
 		public Vector3 p2;  //screen corner
-		public Vector3 p3; //screen corner
+		public Vector3 p3;  //screen corner
 
 		public camera(Vector3 e, float fieldofview, Vector3 viewdirection)
 		{
@@ -116,7 +116,10 @@ namespace Template
 			this.r = r;
 			this.intersection = false;
         }
-    }
-
+		public Vector3 reflection(ray r, Vector3 surface)
+		{
+			return (r.D - 2 * Vector3.Dot(r.D, surface) * surface);
+		}
+	}
 }
 
