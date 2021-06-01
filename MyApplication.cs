@@ -36,27 +36,10 @@ namespace Template
 					float v = (float)y / 512;
 				}
 			}
-			/*
-			Vector3 P = camera.GetP(u, v);
-
-			Ray R;
-			R.O = camera.GetEye();
-			R.D = Vector3.Normalize(P - R.O);
-			R.t = 1e37f;
-			for (each prmitive in .. )
+			for (int x=512; x < 1024; x++)
 			{
-				t = Intersection();
-				if (t < R.t)
-				{
-					...
-				}
 
 			}
-		}
-		for (int x=512; x < 1024; x++)
-		{
-
-		}
 	/*for (int i=0;i<512*512;i++)
 	{
 		Vector3 hdr = pixels[i];
