@@ -40,59 +40,58 @@ namespace Template
 					float v = (float)y / 512;
 				}
 			}
-					/*
-					Vector3 P = camera.GetP(u, v);
+			/*
+			Vector3 P = camera.GetP(u, v);
 
-					Ray R;
-					R.O = camera.GetEye();
-					R.D = Vector3.Normalize(P - R.O);
-					R.t = 1e37f;
-					for (each prmitive in .. )
-                    {
-						t = Intersection();
-						if (t < R.t)
-                        {
-							...
-                        }
-					
-                    }
-                }
-				for (int x=512; x < 1024; x++)
-                {
-
-                }
-			/*for (int i=0;i<512*512;i++)
+			Ray R;
+			R.O = camera.GetEye();
+			R.D = Vector3.Normalize(P - R.O);
+			R.t = 1e37f;
+			for (each prmitive in .. )
 			{
-				Vector3 hdr = pixels[i];
-				rtScreen.pixels[i] = MixColor(f2intcolor(hdr.X), f2intcolor(hdr.Y), f2intcolor(hdr.Z));
-			}*/
-		
-        }
-		
-		//returns the color in one int.
-		static int MixColor(int red, int green, int blue)
-		{
-			return (red << 16) + (green << 8) + blue;
-		}
-		static int f2intcolor(float color)
-        {
-			return Math.Min((int)color * 256, 255);
-		}
-		int TX(float x)
-		{
-			x+=2;
-			return (int)(x / 4 * screen.width);
-		}
-		int TY(float y)
-		{
-			y = -y;
-			y+=2;
-			return (int)(y / 4 * screen.height)*(screen.width/screen.height);
-		}
-		public void RenderGL()
-		{
-		}
+				t = Intersection();
+				if (t < R.t)
+				{
+					...
+				}
 
+			}
+		}
+		for (int x=512; x < 1024; x++)
+		{
 
+		}
+	/*for (int i=0;i<512*512;i++)
+	{
+		Vector3 hdr = pixels[i];
+		rtScreen.pixels[i] = MixColor(f2intcolor(hdr.X), f2intcolor(hdr.Y), f2intcolor(hdr.Z));
+	}*/
+
+		}
+	//returns the color in one int.
+	static int MixColor(int red, int green, int blue)
+    { 
+		return (red << 16) + (green << 8) + blue;
 	}
+	static int f2intcolor(float color)
+	{
+		return Math.Min((int)color * 256, 255);
+	}
+	int TX(float x)
+	{
+		x += 2;
+		return (int)(x / 4 * screen.width);
+	}
+	int TY(float y)
+	{
+		y = -y;
+		y += 2;
+		return (int)(y / 4 * screen.height) * (screen.width / screen.height);
+	}
+	public void RenderGL()
+	{
+	}
+
+
+}
 }

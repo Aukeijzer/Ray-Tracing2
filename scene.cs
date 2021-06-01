@@ -7,6 +7,12 @@ using OpenTK;
 
 namespace Template
 {
+	struct ray
+	{
+		public Vector3 O;  //origin
+		public Vector3 D;  //direction
+		public float t;    //distance
+	}
 	class camera
 	{
 
@@ -30,6 +36,22 @@ namespace Template
 			P = p0 + u * (p1 - p0) + v * (p2 - p0);
 			return P;
 		}
+		class scene
+		{
+			Vector3 O;  //origin
+			Vector3 D;  //direction
+			float t;    //distance
+			public sphere s1;
+			public sphere s2;
+			public sphere s3;
 
-	}
+			public scene()
+			{
+				s1 = new sphere(new Vector3(2, 0, 5), 1f);
+				s2 = new sphere(new Vector3(0, 0, 5), 1f);
+				s3 = new sphere(new Vector3(-2, 0, 5), 1f);
+			}
+		}
+
+		}
 }
