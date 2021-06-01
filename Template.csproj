@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="light.cs" />
     <Compile Include="primitive.cs" />
     <Compile Include="scene.cs" />
     <Compile Include="MyApplication.cs" />
