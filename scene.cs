@@ -35,7 +35,7 @@ namespace Template
 		{
 			E = e;              //camera position
 			fov = fieldofview;  //field of view
-			V = viewdirection; //camera direction
+			V = viewdirection;  //camera direction
 			C = E + fov * V;
 			p0 = C + new Vector3(-1, 1, 0);
 			p1 = C + new Vector3(1, 1, 0);
