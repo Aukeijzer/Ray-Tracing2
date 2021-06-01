@@ -48,18 +48,18 @@ namespace Template
 
 	public class plane : primitive
 	{
-		public Vector2 normal;
+		public Vector3 normal;
 		public float t;
 		public Vector3 rgb;
 		public bool refl;
 
-		public plane(Vector2 basenormal, float distance)
+		public plane(Vector3 basenormal, float distance)
 		{
 			normal = basenormal;
 			t = distance;
 			reflective = true;
 		}
-		public plane(Vector2 basenormal, float distance, Vector3 rgbcolor)
+		public plane(Vector3 basenormal, float distance, Vector3 rgbcolor)
 		{
 			normal = basenormal;
 			t = distance;
