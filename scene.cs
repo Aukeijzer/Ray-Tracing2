@@ -56,6 +56,7 @@ namespace Template
 		public sphere s2;
 		public sphere s3;
 		public List<primitive> primitives = new List<primitive>();
+		public List<light> lights = new List<light>();
 		public camera camera;
 		public scene()
 		{
@@ -66,24 +67,32 @@ namespace Template
 			primitives.Add(s2);
 			primitives.Add(s3);
 		}
+		//for a given ray gives the nearest intersection in a scene with a primitive. returns this as a intersection object.
 		public intersect calcIntersection(ray r)
 		{
+			//if this is true then an intersection is found
 			bool intersection=false;
+			//the object with the nearest intersection
 			primitive obj=new primitive();
+			Vector3 D = r.D;
+			Vector3 O = r.O;
+			//t is calculated as the distance between the origin of the ray and the intersection
+			float t=1e37f;
+			//calculating all possible intersections for all spheres in the scene
 			foreach (sphere s in primitives)
 			{
-				Vector3 D = r.D;
-				Vector3 SO = new Vector3(r.O[0] - s.pos[0], r.O[1] - s.pos[1], r.O[2] - s.pos[2]);
+				Vector3 SO = new Vector3(O[0] - s.pos[0], O[1] - s.pos[1], O[2] - s.pos[2]);
 				float rad = s.r;
 				float a = Vector3.Dot(D, D);
 				float b = Vector3.Dot(D, SO);
 				float c = Vector3.Dot(SO, SO) - rad * rad;
 				float d = b * b - 4 * a * c;
-				float t;
+				//if d<0 then the sphere has no intersection with the ray
 				if (d >= 0)
                 {
 					intersection = true;
 					t = -(b + (float)Math.Sqrt(d)) / (2 * a);
+					//checking if there is any closer intersection
 					if (t < r.t)
                     {
 						r.t = t;
@@ -91,6 +100,30 @@ namespace Template
                     }
                 }					
 			}
+			//calculating all possible intersections for all planes in the scene
+			foreach (plane p in primitives)
+            {
+				Vector3 N = p.normal;
+				float d = p.t;
+				float ndotd = Vector3.Dot(N, D);
+				//if ndot==0 then the ray is parallel to the plane, thus we check if the origin is in the plane (which means N*O+d==0) and if it is t is set to 0.
+				if (ndotd == 0 && Vector3.Dot(N, O) + d == 0)
+                {
+					intersection = true;
+					t = 0;
+                }
+				//if ndot!=0 calculate the intersection the regular way
+                else
+                {
+					t = (ndotd + d) / Vector3.Dot(N, O);
+                }
+				//checking if there is any closer intersection
+				if (t < r.t)
+                {
+					r.t = t;
+					obj = p;
+                }
+            }
 			Vector3 point = r.O + r.t * r.D;
 			intersect intersect;
 			if (intersection) { intersect = new intersect(point, obj, r); }
@@ -100,10 +133,10 @@ namespace Template
 	}
 	public class intersect
     {
-		public Vector3 point;
-		public primitive obj;
-		public ray r;
-		public bool intersection;
+		public Vector3 point; //the point of intersection
+		public primitive obj; //the primitive with which is intersected
+		public ray r; //the ray which caused the intersection
+		public bool intersection; //if this is true then an intersection is made. (when a ray has no intersection it still creates an intersection object)
 		public intersect(Vector3 point,primitive obj, ray r)
 	    {
 			this.point = point;
