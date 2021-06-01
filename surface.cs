@@ -214,8 +214,8 @@ namespace Template
 			camera camera = scene.camera;
 			Vector3 origin = camera.E;
 			Vector3 direction = camera.p0;
-			Vector3 u=camera.p1-camera.p0;
-			Vector3 v=camera.p2-camera.p0;
+			Vector3 u=(camera.p1-camera.p0)/width;
+			Vector3 v=(camera.p2-camera.p0)/height;
 			
 			int i = 0;
 			for (int y=0;y<height;y++) for (int x = 0; x < width; x++)
