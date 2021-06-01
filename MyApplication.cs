@@ -3,12 +3,6 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK;
 namespace Template
 {
-    struct ray
-    {
-		Vector3 O;	//origin
-		Vector3 D;	//direction
-		float t;	//distance
-    }
 	class MyApplication
 	{
 		// member variables
