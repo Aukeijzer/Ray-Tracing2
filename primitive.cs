@@ -9,7 +9,8 @@ namespace Template
 {
 	public class primitive
 	{
-		public Vector3 rgbcolor; //color in Vector3
+		public Vector3 rgbcolor;
+		public bool reflective;
 
 		public static int MixColor(int red, int green, int blue)
 		{
@@ -28,10 +29,20 @@ namespace Template
 	{
 		public Vector3 pos;
 		public float r;
+		public bool refl;
+		public Vector3 rgb;
 		public sphere(Vector3 position, float radius)
 		{
 			pos = position;
 			r = radius;
+			reflective = true;
+		}
+		public sphere(Vector3 position, float radius, Vector3 rgbcolor)
+		{
+			pos = position;
+			r = radius;
+			reflective = false;
+			rgb = rgbcolor;
 		}
 	}
 
@@ -39,11 +50,21 @@ namespace Template
 	{
 		public Vector2 normal;
 		public float t;
+		public Vector3 rgb;
+		public bool refl;
 
 		public plane(Vector2 basenormal, float distance)
 		{
 			normal = basenormal;
 			t = distance;
+			reflective = true;
+		}
+		public plane(Vector2 basenormal, float distance, Vector3 rgbcolor)
+		{
+			normal = basenormal;
+			t = distance;
+			reflective = false;
+			rgb = rgbcolor;
 		}
 	}
 

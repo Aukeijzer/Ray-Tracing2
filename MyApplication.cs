@@ -18,6 +18,14 @@ namespace Template
 			rtScreen = new Surface(512, 512);
 			rtScreen.Clear(0xffffff);
 			pixels = new Vector3[512 * 512];
+
+
+			Surface map; float[,] h;
+
+			map = new Surface("../../assets/checkered_field.png");
+			h = new float[696, 696];
+			for (int y = 0; y < 696; y++) for (int x = 0; x < 696; x++) h[x, y] = ((float)(map.pixels[x + y * 696] & 695)) / 696;
+
 		}
 
 
