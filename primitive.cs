@@ -7,11 +7,11 @@ using OpenTK;
 
 namespace Template
 {
-	class primitive
+	public class primitive
 	{
 		public Vector3 rgbcolor; //color in Vector3
 	}
-	class sphere : primitive
+	public class sphere : primitive
 	{
 		public Vector3 pos;
 		public float r;
@@ -22,7 +22,7 @@ namespace Template
 		}
 	}
 
-	class plane : primitive
+	public class plane : primitive
 	{
 		public Vector2 normal;
 		public float t;

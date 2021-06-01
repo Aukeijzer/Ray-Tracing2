@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
-//cum2
+
 namespace Template
 {
 	public class Surface
@@ -207,6 +207,10 @@ namespace Template
 			y = -y;
 			y++;
 			return (int) (y / 2 * height);
+        }
+		public void drawscene(scene scene)
+        {
+
         }
 	}
 	public class Sprite
