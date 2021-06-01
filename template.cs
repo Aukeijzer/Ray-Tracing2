@@ -26,6 +26,14 @@ namespace Template
 		static int screenID;            // unique integer identifier of the OpenGL texture
 		static MyApplication app;       // instance of the application
 		static bool terminated = false; // application terminates gracefully when this is true
+		static bool w_key = false;
+		static bool a_key = false;
+		static bool s_key = false;
+		static bool d_key = false;
+		static bool r_arrow = false;
+		static bool l_arrow = false;
+		static bool u_arrow = false;
+		static bool d_arrow = false;
 		protected override void OnLoad( EventArgs e )
 		{
 			// called during application initialization
@@ -56,6 +64,14 @@ namespace Template
 			// called once per frame; app logic
 			var keyboard = OpenTK.Input.Keyboard.GetState();
 			if( keyboard[OpenTK.Input.Key.Escape] ) terminated = true;
+			if (keyboard[OpenTK.Input.Key.W]) w_key = true;
+			if (keyboard[OpenTK.Input.Key.A]) a_key = true;
+			if (keyboard[OpenTK.Input.Key.S]) s_key = true;
+			if (keyboard[OpenTK.Input.Key.D]) d_key = true;
+			if (keyboard[OpenTK.Input.Key.Right]) r_arrow = true;
+			if (keyboard[OpenTK.Input.Key.Left]) l_arrow = true;
+			if (keyboard[OpenTK.Input.Key.Up]) u_arrow = true;
+			if (keyboard[OpenTK.Input.Key.Down]) d_arrow = true;
 		}
 		protected override void OnRenderFrame( FrameEventArgs e )
 		{
@@ -69,6 +85,38 @@ namespace Template
 			{
 				Exit();
 				return;
+			}
+			if (w_key)
+            {
+				//...
+            }
+			if (a_key)
+			{
+				//...
+			}
+			if (s_key)
+			{
+				//...
+			}
+			if (d_key)
+			{
+				//...
+			}
+			if (r_arrow)
+			{
+				//...
+			}
+			if (l_arrow)
+			{
+				//...
+			}
+			if (u_arrow)
+			{
+				//...
+			}
+			if (d_arrow)
+			{
+				//...
 			}
 			// convert MyApplication.screen to OpenGL texture
 			GL.BindTexture( TextureTarget.Texture2D, screenID );
