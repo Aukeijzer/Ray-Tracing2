@@ -27,19 +27,7 @@ namespace Template
 		{
 			rtScreen.CopyTo(screen, 0, 0);
 			debugScreen.CopyTo(screen, 512, 0);
-			for (int y = 0; y < 512; y++)
-			{
-				for (int x = 0; x < 512; x++)
-				{
-					//
-					float u = (float)x / 512;
-					float v = (float)y / 512;
-				}
-			}
-			for (int x=512; x < 1024; x++)
-			{
 
-			}
 	/*for (int i=0;i<512*512;i++)
 	{
 		Vector3 hdr = pixels[i];
