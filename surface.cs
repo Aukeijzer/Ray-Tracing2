@@ -229,7 +229,7 @@ namespace Template
 			return (int) (y / 2 * height);
         }
 		//puts what is viewed through the camera of the scene in the screen.
-		public void drawscene(scene scene, List<ray> pixelsRayAll)
+		public void drawscene(scene scene)
         {
 			camera camera = scene.camera;
 			Vector3 origin = camera.E; //where the camera is situated
@@ -251,7 +251,7 @@ namespace Template
 				{
 					Vector3 tempVect = new Vector3(intersection.point - intersection.r.O);
 						
-					pixelsRayAll.Add(new ray(pixelray.O, pixelray.D, (float)Math.Sqrt(Math.Pow(tempVect.X,2) + (Math.Pow(tempVect.Y, 2)) + (Math.Pow(tempVect.Z, 2))))); //ray is saved with the distance traveled (intersection)
+					//pixelsRayAll.Add(new ray(pixelray.O, pixelray.D, (float)Math.Sqrt(Math.Pow(tempVect.X,2) + (Math.Pow(tempVect.Y, 2)) + (Math.Pow(tempVect.Z, 2))))); //ray is saved with the distance traveled (intersection)
 
 					//update color based on the color of the object
 					Vector3 color = intersection.obj.rgbcolor;
@@ -269,20 +269,18 @@ namespace Template
 
 				}
 				// if no intersection is found the pixel will be set to white
-				else { pixels[i] = 0xffffff; pixelsRayAll.Add(pixelray); } //ray is saved with infinite distance traveled (no intersection)
+				else pixels[i] = 0xffffff; //ray is saved with infinite distance traveled (no intersection)
 				i++;
             }
         }
 		//draws the debug screen, giving a topdown view of of the plane horizontal to the direction of the camera in the scene.
-		public void drawdebug(scene scene, List<ray> pixelsRayAll, List<primitive> primitives)
+		/*public void drawdebug(scene scene, List<ray> pixelsRayAll, List<primitive> primitives)
         {
 			camera camera = scene.camera;
 			Vector3 origin = camera.E; //where the camera is situated
 			Vector3 direction = camera.p0 - origin; //this is the direction of the ray in the topright corner of the screen
 			Vector3 u = (camera.p1 - camera.p0) / width; //for each pixel to right the new direction of the ray is the direction of the old one + u
 			Vector3 v = (camera.p2 - camera.p0) / height; //same as vector u but from top to bottom
-
-			//...(hoe wordt FOV gebruikt?)
 
 			for (int x = 0; x < width; x++)
             {
@@ -299,7 +297,7 @@ namespace Template
 
 			foreach (ray ray in pixelsRayAll) //drawing the rays
             {
-				if (ray.t == 1e36f) //it has no intersection
+				if (ray.t == 1e37f) //it has no intersection
                 {
 					float x1 = (ray.O.X * (512f / 10f) + 256); 
 					float y1 = (ray.O.Z * -(512f / 10f) + 512);
@@ -328,7 +326,7 @@ namespace Template
 
 				Line((int)(256 -half_screenplane), (int)(512 -camera.d), (int)(256 +half_screenplane), (int)(512 -camera.d), 255); //draws screenplane (255 = blue)
 			}
-		}
+		}*/
 	}
 
 

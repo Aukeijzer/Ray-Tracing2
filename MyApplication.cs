@@ -39,7 +39,7 @@ namespace Template
 		// tick: renders one frame
 		public void Tick()
 		{
-			rtScreen.drawscene(scene, pixelsRayAll);
+			rtScreen.drawscene(scene);
 			rtScreen.CopyTo(screen, 0, 0);
 			if (debug)
             {

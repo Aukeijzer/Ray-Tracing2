@@ -29,7 +29,6 @@ namespace Template
 	public class camera
 	{
 		public Vector3 E;   //camera position
-		public float fov;   //distance between camera and the center of the screen. The closer the distance the bigger the view of the camera.
 		public Vector3 V;   //camera direction
 		public Vector3 C;   //screen center
 		public Vector3 p0;  //screen corner (top left)
@@ -42,8 +41,7 @@ namespace Template
 		{
 			E = e;              //camera position
 			float normalPeopleUseRadians = (float)((fieldofview * Math.PI) / 180);
-			fov =(float) (1/(2*Math.Tan(normalPeopleUseRadians)));  //field of view
-			float d = (float)(1f / Math.Tan(fov)); //distance from E to screen plane (1f is half the screen plane).
+			float d = (float)(1f / Math.Tan(normalPeopleUseRadians)); //distance from E to screen plane (1f is half the screen plane).
 			V = viewdirection.Normalized();  //camera direction (0,0,1)
 			C = E + d * V;
 			p0 = C + new Vector3(-1, 1, 0);
