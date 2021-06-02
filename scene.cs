@@ -41,8 +41,8 @@ namespace Template
 		public camera(Vector3 e, int fieldofview, Vector3 viewdirection)
 		{
 			E = e;              //camera position
-			float fov = (float)((fieldofview * Math.PI) / 180);
-			float d = (float)(1f / Math.Tan(fov/2)); //distance from E to screen plane (1f is half the screen plane).
+			fov = (float)((fieldofview * Math.PI) / 180);
+			d = (float)(1f / Math.Tan(fov/2)); //distance from E to screen plane (1f is half the screen plane).
 			V = viewdirection.Normalized();  //camera direction (0,0,1)
 			C = E + d * V;
 			p0 = C + new Vector3(-1, 1, 0);
@@ -67,7 +67,7 @@ namespace Template
 			sphere s1 = new sphere(new Vector3(-3f, 0, 6f), 1f, new Vector3(1,0,0));
 			sphere s2 = new sphere(new Vector3(0, 0, 6f), 1f, new Vector3(0, 1, 0));
 			sphere s3 = new sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
-			plane p1 = new plane(new Vector3(0, 0, 1), -2, new Vector3(255, 255, 255));
+			plane p1 = new plane(new Vector3(0, 1, 0), -2, new Vector3(255, 255, 255));
 			light l1 = new light(new Vector3(9, 9, 1), 1f);
 			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);
 			lightSources.Add(l1);
@@ -103,8 +103,22 @@ namespace Template
 					//if d<0 then the sphere has no intersection with the ray
 					if (d >= 0)
 					{
-						intersection = true;
-						t = -(b + (float)Math.Sqrt(d)) / (2 * a);
+						//normally t=t1, however in the edge case where te camera is inside the sphere the t=t2
+						float t1= -(b + (float)Math.Sqrt(d)) / (2 * a);
+						if (t1 >= 0)
+                        {
+							intersection = true;
+							t = t1;
+						}
+                        else
+                        {
+							float t2= -(b - (float)Math.Sqrt(d)) / (2 * a);
+							if (t2 >= 0)
+                            {
+								intersection = true;
+								t = t2;
+                            }
+						}
 					}
 				}
 				//calculating intersections for all planes in the scene
@@ -127,11 +141,15 @@ namespace Template
 					//if ndot!=0 calculate the intersection the regular way
 					else
 					{
-						intersection = true;
-						t = (ndotd + d) / Vector3.Dot(N, O);
+						float t1 = (ndotd + d) / Vector3.Dot(N, O);
+						if (t1 >= 0)
+                        {
+							intersection = true;
+							t = t1;
+						}
 					}
 				}
-				if (t < r.t)
+				if (t < r.t && t > 0)
 				{
 					r.t = t;
 					obj = P;
