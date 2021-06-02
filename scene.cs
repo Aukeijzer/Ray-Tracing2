@@ -66,6 +66,7 @@ namespace Template
 			sphere s1 = new sphere(new Vector3(0, -2, 5), 1f, new Vector3(1,0,0));
 			sphere s2 = new sphere(new Vector3(0, 0, 5), 1f, new Vector3(0, 1, 0));
 			sphere s3 = new sphere(new Vector3(0, 2, 5), 1f, new Vector3(0, 0, 1));
+			plane p1=new plane(new Vector3(0,0,1))
 			light l1 = new light(new Vector3(9, 9, 1), 1f);
 			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);
 			lightSources.Add(l1);
@@ -168,20 +169,20 @@ namespace Template
 		public Vector3 point; //this is the point where the ray lands
 		public primitive obj; //the primitive with which is intersected
 		public ray r; //the ray which caused the intersection
-		public bool empty; //if this is true then the ray has met an non-reflective object (when a ray doesnt meet any primitives still creates an intersection object)
+		public bool intersection_made; //if this is true then the ray has met an non-reflective object (when a ray doesnt meet any primitives still creates an intersection object)
 		//if an intersection is made between a ray and primitive this constructormethod will store all relevant information in the membervariables.
 		public intersect(Vector3 point,primitive obj, ray r)
 	    {
 			this.point = point;
 			this.obj = obj;
 			this.r = r;
-			this.empty = true;
+			this.intersection_made = true;
         }
 		//if no intersection is made for a ray this constructor is used.
 		public intersect(ray r)
         {
 			this.r = r;
-			this.empty = false;
+			this.intersection_made = false;
         }
 	}
 }

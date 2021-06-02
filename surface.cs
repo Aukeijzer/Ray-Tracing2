@@ -247,7 +247,7 @@ namespace Template
 
 				intersect intersection = scene.calcIntersection(pixelray,0);
 				//check if intersection is made
-				if (intersection.empty)
+				if (!intersection.intersection_made)
 				{
 					Vector3 tempVect = new Vector3(intersection.point - intersection.r.O);
 						
@@ -261,7 +261,7 @@ namespace Template
 					foreach (light lightray in scene.lightSources)
 					{
 						ray temp = new ray(intersection.point, lightray.pos - intersection.point);
-						if (scene.calcIntersection(temp,0).empty == true)
+						if (scene.calcIntersection(temp,0).intersection_made == true)
 						{
 							color = new Vector3(0, 0, 0);
 						}
