@@ -280,7 +280,7 @@ namespace Template
 			Vector3 origin = camera.E; //where the camera is situated
 			Vector3 direction = camera.C - origin; //this is the direction of the ray through the middle of the screen
 			Vector3 u = (camera.p1 - camera.p0) / width; //for each pixel to right the new direction of the ray is the direction of the old one + u
-			//when x=0 on the debugscreen this will create the line from the camera to the toprightcorner. In the scene this represents the ray going through the middle left of the screenplane.
+			//when x=0. on the debugscreen this will create the line from the camera to the topleftcorner. In the scene this represents the ray going through the middle left of the screenplane.
 			for (int x = 0; x < width; x += 2)
 			{
 				ray pixelray = new ray(origin, direction + (x-width/2) * u);
@@ -296,9 +296,8 @@ namespace Template
 					r = new ray(pixelray.O, pixelray.D, tempVect.Length); //ray is saved with the distance traveled (intersection)
 					float x1 = width / 2;
 					float y1 = height;
-					float full_length = 10*new Vector2(((float)x)/width-0.5f, 1).Length;
-					float x2 = (width / 2) + (x - width / 2) * (r.t / full_length);
-					float y2 = height*(1-(r.t / full_length));
+					float x2 = (width / 2) + r.D.X * r.t * width/2/10;
+					float y2 = (height) - camera.d - r.D.Z * r.t  * height/10 ;
 					Line((int)x1, (int)y1, (int)x2, (int)y2, 0x00ff00); //groen
 				}
 				else
@@ -306,8 +305,8 @@ namespace Template
 					r = pixelray; //ray is saved with infinite distance traveled (no intersection)
 					float x1 = width/2;
 					float y1 = height;
-					float x2 = x;
-					float y2 = 0;
+					float x2 = (width / 2) + r.D.X * 100 * width / 2 / 10;
+					float y2 = (height) - camera.d - r.D.Z * 100 * height / 10;
 					Line((int)x1, (int)y1, (int)x2, (int)y2, 0xff0000); //rood
 				}
 			}
@@ -322,9 +321,9 @@ namespace Template
 				}
 			}
 				
-			float half_screenplane = (float)(Math.Tan(0.5f * camera.fov) * camera.d);
+			float half_screenplane = (float)(Math.Tan(0.5f * camera.fov) * camera.d)*width/10/2; //fov and d = 0 ????
 
-			Line((int)(256 -half_screenplane), (int)(512 -camera.d), (int)(256 +half_screenplane), (int)(512 -camera.d), 255); //draws screenplane (255 = blue)
+			Line((int)(width/2 -half_screenplane), (int)(height -camera.d*height/10), (int)(width/2 +half_screenplane), (int)(height -camera.d * height / 10), 0x0000ff); //draws screenplane (255 = blue)
 		}
 	}
 

@@ -41,8 +41,8 @@ namespace Template
 		public camera(Vector3 e, int fieldofview, Vector3 viewdirection)
 		{
 			E = e;              //camera position
-			float fov = (float)((fieldofview * Math.PI) / 180);
-			float d = (float)(1f / Math.Tan(fov/2)); //distance from E to screen plane (1f is half the screen plane).
+			fov = (float)((fieldofview * Math.PI) / 180);
+			d = (float)(1f / Math.Tan(fov/2)); //distance from E to screen plane (1f is half the screen plane).
 			V = viewdirection.Normalized();  //camera direction (0,0,1)
 			C = E + d * V;
 			p0 = C + new Vector3(-1, 1, 0);
