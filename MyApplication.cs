@@ -32,9 +32,6 @@ namespace Template
 			for (int y = 0; y < 696; y++) for (int x = 0; x < 696; x++) h[x, y] = ((float)(map.pixels[x + y * 696] & 695)) / 696;*/
 
 		}
-
-
-
 		// tick: renders one frame
 		public void Tick()
 		{
@@ -46,22 +43,9 @@ namespace Template
 				debugScreen.CopyTo(screen, 512, 0);
 			}
 		}
-		int TX(float x)
-		{
-			x += 2;
-			return (int)(x / 4 * screen.width);
-		}
-		int TY(float y)
-		{
-			y = -y;
-			y += 2;
-			return (int)(y / 4 * screen.height) * (screen.width / screen.height);
-		}
 		public void RenderGL()
 		{
 
 		}
-
-
 	}
 }
