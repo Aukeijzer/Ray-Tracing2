@@ -42,7 +42,7 @@ namespace Template
 		{
 			E = e;              //camera position
 			float fov = (float)((fieldofview * Math.PI) / 180);
-			float d = (float)(1f / Math.Tan(fov)); //distance from E to screen plane (1f is half the screen plane).
+			float d = (float)(1f / Math.Tan(fov/2)); //distance from E to screen plane (1f is half the screen plane).
 			V = viewdirection.Normalized();  //camera direction (0,0,1)
 			C = E + d * V;
 			p0 = C + new Vector3(-1, 1, 0);
@@ -64,9 +64,9 @@ namespace Template
 		{
 			camera = new camera(new Vector3(0, 0, 0), 120, new Vector3(0, 0, 1));
 			maxreflect = 3;
-			sphere s1 = new sphere(new Vector3(0, -0.5f, 4.1f), 1f, new Vector3(1,0,0));
-			sphere s2 = new sphere(new Vector3(0, 0, 4.1f), 3.6f, new Vector3(0, 1, 0));
-			sphere s3 = new sphere(new Vector3(0, 0.5f, 4.1f), 1f, new Vector3(0, 0, 1));
+			sphere s1 = new sphere(new Vector3(-3f, 0, 6f), 1f, new Vector3(1,0,0));
+			sphere s2 = new sphere(new Vector3(0, 0, 6f), 1f, new Vector3(0, 1, 0));
+			sphere s3 = new sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
 			plane p1 = new plane(new Vector3(0, 0, 1), -2, new Vector3(255, 255, 255));
 			light l1 = new light(new Vector3(9, 9, 1), 1f);
 			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);
@@ -97,7 +97,7 @@ namespace Template
 					Vector3 SO = new Vector3(O[0] - s.pos[0], O[1] - s.pos[1], O[2] - s.pos[2]);
 					float rad = s.r;
 					float a = Vector3.Dot(D, D);
-					float b = Vector3.Dot(D, SO);
+					float b = 2*Vector3.Dot(D, SO);
 					float c = Vector3.Dot(SO, SO) - rad * rad;
 					float d = b * b - 4 * a * c;
 					//if d<0 then the sphere has no intersection with the ray

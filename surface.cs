@@ -281,9 +281,13 @@ namespace Template
 			Vector3 direction = camera.C - origin; //this is the direction of the ray through the middle of the screen
 			Vector3 u = (camera.p1 - camera.p0) / width; //for each pixel to right the new direction of the ray is the direction of the old one + u
 			//when x=0 on the debugscreen this will create the line from the camera to the toprightcorner. In the scene this represents the ray going through the middle left of the screenplane.
-			for (int x = 0; x < width; x += 10)
+			for (int x = 0; x < width; x += 2)
 			{
 				ray pixelray = new ray(origin, direction + (x-width/2) * u);
+				if (x == 512)
+                {
+					int cum = 69;
+                }
 				intersect intersection = scene.calcIntersection(pixelray, 0);
 				ray r;
 				if (intersection.intersection_made)
