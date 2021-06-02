@@ -8,11 +8,14 @@ namespace Template
 		// member variables
 		public Surface screen, debugScreen, rtScreen;
 		public camera camera;
+		public bool debug=true; //determines if the debugscreen will be shown
 		// initialize
 		Surface map;
+		scene scene = new scene();
 		public Vector3[] pixels;
 		public void Init()
 		{
+
 			debugScreen = new Surface(512, 512);
 			debugScreen.Clear(0x000000);
 			rtScreen = new Surface(512, 512);
@@ -33,8 +36,12 @@ namespace Template
 		// tick: renders one frame
 		public void Tick()
 		{
+			rtScreen.drawscene(scene);
 			rtScreen.CopyTo(screen, 0, 0);
-			debugScreen.CopyTo(screen, 512, 0);
+			if (debug)
+            {
+				debugScreen.CopyTo(screen, 512, 0);
+			}
 
 	/*for (int i=0;i<512*512;i++)
 	{

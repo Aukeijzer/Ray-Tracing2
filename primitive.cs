@@ -10,7 +10,7 @@ namespace Template
 	public class primitive
 	{
 		public Vector3 rgbcolor;
-		public bool reflective;
+		public bool reflective=false;
 
 		public static int MixColor(int red, int green, int blue)
 		{

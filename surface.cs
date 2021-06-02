@@ -209,37 +209,52 @@ namespace Template
 			y++;
 			return (int) (y / 2 * height);
         }
+		//puts what is viewed through the camera of the scene in the screen.
 		public void drawscene(scene scene)
         {
 			camera camera = scene.camera;
-			Vector3 origin = camera.E;
-			Vector3 direction = camera.p0;
-			Vector3 u=(camera.p1-camera.p0)/width;
-			Vector3 v=(camera.p2-camera.p0)/height;
-			
+			Vector3 origin = camera.E; //where the camera is situated
+			Vector3 direction = camera.p0-origin; //this is the direction of the ray in the topright corner of the screen
+			Vector3 u=(camera.p1-camera.p0)/width; //for each pixel to right the new direction of the ray is the direction of the old one + u
+			Vector3 v=(camera.p2-camera.p0)/height; //same as vector u but from top to bottom
+			//for each x and y update the pixel to what is seen in the scene.
 			int i = 0;
 			for (int y=0;y<height;y++) for (int x = 0; x < width; x++)
                 {
+					//make a new ray given the origin,direction,u,v
 					ray pixelray = new ray(origin, direction + x * u + y * v);
-					intersect intersection = scene.calcIntersection(pixelray);
-					if (intersection.intersection)
+					intersect intersection = scene.calcIntersection(pixelray,0);
+					//check if intersection is made
+					if (intersection.empty)
 					{
+						//update color based on the color of the object
 						Vector3 color = intersection.obj.rgbcolor;
 						pixels[i] = primitive.vec2intcolor(color);
+						
+						//check if the point of intersection is illuminated by a lightsource
 						foreach (light lightray in scene.lightSources)
 						{
 							ray temp = new ray(intersection.point, lightray.pos - intersection.point);
-							if (scene.calcIntersection(temp).intersection == true)
+							if (scene.calcIntersection(temp,0).empty == true)
 							{
 								color = new Vector3(0, 0, 0);
 							}
 						}
 
 					}
+					// if no intersection is found the pixel will be set to white
 					else { pixels[i] = 0xffffff; }
 					i++;
                 }
 
+        }
+		//draws the debug screen, giving a topdown view of of the plane horizontal to the direction of the camera in the scene.
+		public void drawdebug(scene scene,float x, float y)
+        {
+			camera camera = scene.camera;
+
+
+			
         }
 	}
 	public class Sprite

@@ -23,6 +23,7 @@ namespace Template
 {
 	public class OpenTKApp : GameWindow
 	{
+		bool debug = true; //set to true if you want to see the debugscreen.
 		static int screenID;            // unique integer identifier of the OpenGL texture
 		static MyApplication app;       // instance of the application
 		static bool terminated = false; // application terminates gracefully when this is true
@@ -34,6 +35,7 @@ namespace Template
 		static bool l_arrow = false;
 		static bool u_arrow = false;
 		static bool d_arrow = false;
+		static bool tab_key = false;
 		protected override void OnLoad( EventArgs e )
 		{
 			// called during application initialization
@@ -72,6 +74,7 @@ namespace Template
 			if (keyboard[OpenTK.Input.Key.Left]) l_arrow = true;
 			if (keyboard[OpenTK.Input.Key.Up]) u_arrow = true;
 			if (keyboard[OpenTK.Input.Key.Down]) d_arrow = true;
+			if (keyboard[OpenTK.Input.Key.Tab]) tab_key = true;
 		}
 		protected override void OnRenderFrame( FrameEventArgs e )
 		{
@@ -118,6 +121,30 @@ namespace Template
 			{
 				//...
 			}
+			//TODO: fix this garbo
+			/*if (tab_key)
+            {
+				if (debug)
+                {
+					ClientSize = new Size(512, 512);
+					app = new MyApplication();
+					app.screen = new Surface(512, 512);
+					Sprite.target = app.screen;
+					screenID = app.screen.GenTexture();
+					app.Init();
+				}
+                else
+                {
+					ClientSize = new Size(1024, 512);
+					app = new MyApplication();
+					app.screen = new Surface(Width, Height);
+					app.debug = true;
+					Sprite.target = app.screen;
+					screenID = app.screen.GenTexture();
+					app.Init();
+				}
+				debug = !debug;
+            }*/
 			// convert MyApplication.screen to OpenGL texture
 			GL.BindTexture( TextureTarget.Texture2D, screenID );
 			GL.TexImage2D( TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba,
