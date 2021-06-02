@@ -35,13 +35,14 @@ namespace Template
 		public Vector3 p1;  //screen corner (top right)
 		public Vector3 p2;  //screen corner (bottom left)
 		public Vector3 p3;  //screen corner (bottem right)
-		public float d;		//distance E to screenplane
+		public float d;     //distance E to screenplane
+		public float fov;
 
 		public camera(Vector3 e, int fieldofview, Vector3 viewdirection)
 		{
 			E = e;              //camera position
-			float normalPeopleUseRadians = (float)((fieldofview * Math.PI) / 180);
-			float d = (float)(1f / Math.Tan(normalPeopleUseRadians)); //distance from E to screen plane (1f is half the screen plane).
+			float fov = (float)((fieldofview * Math.PI) / 180);
+			float d = (float)(1f / Math.Tan(fov)); //distance from E to screen plane (1f is half the screen plane).
 			V = viewdirection.Normalized();  //camera direction (0,0,1)
 			C = E + d * V;
 			p0 = C + new Vector3(-1, 1, 0);
@@ -61,12 +62,12 @@ namespace Template
 		//TODO: make less stupid constructor
 		public scene()
 		{
-			camera = new camera(new Vector3(0, 0, 0), 120, new Vector3(0, 0, 1));
+			camera = new camera(new Vector3(0, 0, 0), 45, new Vector3(0, 0, 1));
 			maxreflect = 3;
 			sphere s1 = new sphere(new Vector3(0, -2, 5), 1f, new Vector3(1,0,0));
 			sphere s2 = new sphere(new Vector3(0, 0, 5), 1f, new Vector3(0, 1, 0));
 			sphere s3 = new sphere(new Vector3(0, 2, 5), 1f, new Vector3(0, 0, 1));
-			plane p1=new plane(new Vector3(0,0,1))
+			plane p1 = new plane(new Vector3(0, 0, 1), -2, new Vector3(255, 255, 255));
 			light l1 = new light(new Vector3(9, 9, 1), 1f);
 			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);
 			lightSources.Add(l1);
@@ -74,6 +75,7 @@ namespace Template
 			primitives.Add(s1);
 			primitives.Add(s2);
 			primitives.Add(s3);
+			//primitives.Add(p1);
 		}
 		//for a given ray gives the nearest intersection in a scene with a primitive. returns this as a intersection object.
 		public intersect calcIntersection(ray r,int i)
