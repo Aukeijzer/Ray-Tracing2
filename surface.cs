@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace Template
 {
@@ -82,6 +84,23 @@ namespace Template
 			}
 		}
 		// draw a rectangle
+
+		public static void DrawCircle(float x, float y, float radius, Color4 c) //https://stackoverflow.com/questions/46130413/opentk-draw-transparent-circle
+		{
+			GL.Enable(EnableCap.Blend);
+			GL.Begin(PrimitiveType.TriangleFan);
+			GL.Color4(c);
+
+			GL.Vertex2(x, y);
+			for (int i = 0; i < 360; i++)
+			{
+				GL.Vertex2(x + Math.Cos(i) * radius, y + Math.Sin(i) * radius);
+			}
+
+			GL.End();
+			GL.Disable(EnableCap.Blend);
+		}
+
 		public void Box(int x1, int y1, int x2, int y2, int c)
 		{
 			int dest = y1 * width;
@@ -210,7 +229,7 @@ namespace Template
 			return (int) (y / 2 * height);
         }
 		//puts what is viewed through the camera of the scene in the screen.
-		public void drawscene(scene scene)
+		public void drawscene(scene scene, List<ray> pixelsRayAll)
         {
 			camera camera = scene.camera;
 			Vector3 origin = camera.E; //where the camera is situated
@@ -220,43 +239,100 @@ namespace Template
 			//for each x and y update the pixel to what is seen in the scene.
 			int i = 0;
 			for (int y=0;y<height;y++) for (int x = 0; x < width; x++)
-                {
-					//make a new ray given the origin,direction,u,v
-					ray pixelray = new ray(origin, direction + x * u + y * v);
-					intersect intersection = scene.calcIntersection(pixelray,0);
-					//check if intersection is made
-					if (intersection.empty)
-					{
-						//update color based on the color of the object
-						Vector3 color = intersection.obj.rgbcolor;
-						pixels[i] = primitive.vec2intcolor(color);
+            {
+				//make a new ray given the origin,direction,u,v
+				ray pixelray = new ray(origin, direction + x * u + y * v);
+
+					
+
+				intersect intersection = scene.calcIntersection(pixelray,0);
+				//check if intersection is made
+				if (intersection.empty)
+				{
+					Vector3 tempVect = new Vector3(intersection.point - intersection.r.O);
 						
-						//check if the point of intersection is illuminated by a lightsource
-						foreach (light lightray in scene.lightSources)
+					pixelsRayAll.Add(new ray(pixelray.O, pixelray.D, (float)Math.Sqrt(Math.Pow(tempVect.X,2) + (Math.Pow(tempVect.Y, 2)) + (Math.Pow(tempVect.Z, 2))))); //ray is saved with the distance traveled (intersection)
+
+					//update color based on the color of the object
+					Vector3 color = intersection.obj.rgbcolor;
+					pixels[i] = primitive.vec2intcolor(color);
+						
+					//check if the point of intersection is illuminated by a lightsource
+					foreach (light lightray in scene.lightSources)
+					{
+						ray temp = new ray(intersection.point, lightray.pos - intersection.point);
+						if (scene.calcIntersection(temp,0).empty == true)
 						{
-							ray temp = new ray(intersection.point, lightray.pos - intersection.point);
-							if (scene.calcIntersection(temp,0).empty == true)
-							{
-								color = new Vector3(0, 0, 0);
-							}
+							color = new Vector3(0, 0, 0);
 						}
-
 					}
-					// if no intersection is found the pixel will be set to white
-					else { pixels[i] = 0xffffff; }
-					i++;
-                }
 
+				}
+				// if no intersection is found the pixel will be set to white
+				else { pixels[i] = 0xffffff; pixelsRayAll.Add(pixelray); } //ray is saved with infinite distance traveled (no intersection)
+				i++;
+            }
         }
 		//draws the debug screen, giving a topdown view of of the plane horizontal to the direction of the camera in the scene.
-		public void drawdebug(scene scene,float x, float y)
+		public void drawdebug(scene scene, List<ray> pixelsRayAll, List<primitive> primitives)
         {
 			camera camera = scene.camera;
+			Vector3 origin = camera.E; //where the camera is situated
+			Vector3 direction = camera.p0 - origin; //this is the direction of the ray in the topright corner of the screen
+			Vector3 u = (camera.p1 - camera.p0) / width; //for each pixel to right the new direction of the ray is the direction of the old one + u
+			Vector3 v = (camera.p2 - camera.p0) / height; //same as vector u but from top to bottom
 
+			//...(hoe wordt FOV gebruikt?)
 
-			
-        }
+			for (int x = 0; x < width; x++)
+            {
+				ray pixelray = new ray(origin, direction + x * u + 256 * v); //256 to always get middle row
+				intersect intersection = scene.calcIntersection(pixelray, 0);
+
+				if (intersection.empty)
+				{
+					Vector3 tempVect = new Vector3(intersection.point - intersection.r.O);
+					pixelsRayAll.Add(new ray(pixelray.O, pixelray.D, (float)Math.Sqrt(Math.Pow(tempVect.X, 2) + (Math.Pow(tempVect.Y, 2)) + (Math.Pow(tempVect.Z, 2))))); //ray is saved with the distance traveled (intersection)
+				}
+				else { pixelsRayAll.Add(pixelray); } //ray is saved with infinite distance traveled (no intersection)
+			}
+
+			foreach (ray ray in pixelsRayAll) //drawing the rays
+            {
+				if (ray.t == 1e36f) //it has no intersection
+                {
+					float x1 = (ray.O.X * (512f / 10f) + 256); 
+					float y1 = (ray.O.Z * -(512f / 10f) + 512);
+					float x2 = (x1 + ray.D.X * 10000000f);
+					float y2 = (y1 + ray.D.Z * -10000000f);
+					Line((int)x1, (int)y1, (int)x2, (int)y2, 65280); //groen
+                }
+                else //it has an intersection
+                {
+					float x1 = (ray.O.X * (512f / 10f) + 256);
+					float y1 = (ray.O.Z * -(512f / 10f) + 512);
+					float x2 = (ray.D.X * ??);
+					float y2 = (ray.D.Z * ??); //units to pixels?..
+					Line((int)x1, (int)y1, (int)x2, (int)y2, 16711680); //rood
+				}
+
+				foreach (sphere sphere in primitives)
+                {
+					float center_x = (sphere.pos.X * (512f / 10f) + 256);
+					float center_y = (sphere.pos.Z * -(512f / 10f) + 512);
+					DrawCircle(center_x, center_y, sphere.r, new Color4(255, 0, 0, 100)); //... werkt dit?
+				}
+				
+
+				float half_screenplane = (float)(Math.Tan(0.5f * camera.fov) * camera.d);
+
+				Line((int)(256 -half_screenplane), (int)(512 -camera.d), (int)(256 +half_screenplane), (int)(512 -camera.d), 255); //draws screenplane (255 = blue)
+			}
+		}
 	}
+
+
+
 	public class Sprite
 	{
 		Surface bitmap;

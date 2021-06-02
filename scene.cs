@@ -36,14 +36,16 @@ namespace Template
 		public Vector3 p1;  //screen corner (top right)
 		public Vector3 p2;  //screen corner (bottom left)
 		public Vector3 p3;  //screen corner (bottem right)
+		public float d;		//distance E to screenplane
 
 		public camera(Vector3 e, int fieldofview, Vector3 viewdirection)
 		{
 			E = e;              //camera position
 			float normalPeopleUseRadians = (float)((fieldofview * Math.PI) / 180);
 			fov =(float) (1/(2*Math.Tan(normalPeopleUseRadians)));  //field of view
-			V = viewdirection;  //camera direction
-			C = E + fov * V;
+			float d = (float)(1f / Math.Tan(fov)); //distance from E to screen plane (1f is half the screen plane).
+			V = viewdirection.Normalized();  //camera direction (0,0,1)
+			C = E + d * V;
 			p0 = C + new Vector3(-1, 1, 0);
 			p1 = C + new Vector3(1, 1, 0);
 			p2 = C + new Vector3(-1, -1, 0);
