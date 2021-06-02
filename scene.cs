@@ -62,11 +62,11 @@ namespace Template
 		//TODO: make less stupid constructor
 		public scene()
 		{
-			camera = new camera(new Vector3(0, 0, 0), 45, new Vector3(0, 0, 1));
+			camera = new camera(new Vector3(0, 0, 0), 120, new Vector3(0, 0, 1));
 			maxreflect = 3;
-			sphere s1 = new sphere(new Vector3(0, -2, 5), 1f, new Vector3(1,0,0));
-			sphere s2 = new sphere(new Vector3(0, 0, 5), 1f, new Vector3(0, 1, 0));
-			sphere s3 = new sphere(new Vector3(0, 2, 5), 1f, new Vector3(0, 0, 1));
+			sphere s1 = new sphere(new Vector3(0, -0.5f, 4.1f), 1f, new Vector3(1,0,0));
+			sphere s2 = new sphere(new Vector3(0, 0, 4.1f), 3.6f, new Vector3(0, 1, 0));
+			sphere s3 = new sphere(new Vector3(0, 0.5f, 4.1f), 1f, new Vector3(0, 0, 1));
 			plane p1 = new plane(new Vector3(0, 0, 1), -2, new Vector3(255, 255, 255));
 			light l1 = new light(new Vector3(9, 9, 1), 1f);
 			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);

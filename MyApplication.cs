@@ -40,8 +40,8 @@ namespace Template
 		{
 			//rtScreen.drawscene(scene);
 			//rtScreen.CopyTo(screen, 0, 0);
-			//screen.drawscene(scene);
-			screen.drawdebug(scene);
+			screen.drawscene(scene);
+			//screen.drawdebug(scene);
 			if (debug)
             {
 				//debugScreen.drawdebug(scene,pixelsRayAll,scene.primitives);

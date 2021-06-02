@@ -30,19 +30,18 @@ namespace Template
 		public Vector3 pos;
 		public float r;
 		public bool refl;
-		public Vector3 rgb;
 		public sphere(Vector3 position, float radius)
 		{
 			pos = position;
 			r = radius;
 			reflective = true;
 		}
-		public sphere(Vector3 position, float radius, Vector3 rgbcolor)
+		public sphere(Vector3 position, float radius, Vector3 rgb)
 		{
 			pos = position;
 			r = radius;
 			reflective = false;
-			rgb = rgbcolor;
+			rgbcolor = rgb;
 		}
 	}
 
@@ -50,7 +49,6 @@ namespace Template
 	{
 		public Vector3 normal;
 		public float t;
-		public Vector3 rgb;
 		public bool refl;
 
 		public plane(Vector3 basenormal, float distance)
@@ -59,12 +57,12 @@ namespace Template
 			t = distance;
 			reflective = true;
 		}
-		public plane(Vector3 basenormal, float distance, Vector3 rgbcolor)
+		public plane(Vector3 basenormal, float distance, Vector3 rgb)
 		{
 			normal = basenormal;
 			t = distance;
 			reflective = false;
-			rgb = rgbcolor;
+			rgbcolor = rgb;
 		}
 	}
 

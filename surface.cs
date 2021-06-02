@@ -258,44 +258,43 @@ namespace Template
 					pixels[i] = primitive.vec2intcolor(color);
 						
 					//check if the point of intersection is illuminated by a lightsource
-					/*foreach (light lightray in scene.lightSources)
+					foreach (light lightray in scene.lightSources)
 					{
 						ray temp = new ray(intersection.point, lightray.pos - intersection.point);
 						if (scene.calcIntersection(temp,0).intersection_made == true)
 						{
 							color = new Vector3(0, 0, 0);
 						}
-					}*/
+					}
 
 				}
 				// if no intersection is found the pixel will be set to white
 				else pixels[i] = 0xffffff; //ray is saved with infinite distance traveled (no intersection)
 				i++;
             }
-			Line(0, 0, 512, 512, 0x00ff00);
         }
 		//draws the debug screen, giving a topdown view of of the plane horizontal to the direction of the camera in the scene.
 		public void drawdebug(scene scene)
         {
 			camera camera = scene.camera;
 			Vector3 origin = camera.E; //where the camera is situated
-			Vector3 direction = camera.p0 - origin; //this is the direction of the ray in the topright corner of the screen
+			Vector3 direction = camera.C - origin; //this is the direction of the ray through the middle of the screen
 			Vector3 u = (camera.p1 - camera.p0) / width; //for each pixel to right the new direction of the ray is the direction of the old one + u
-			Vector3 v = (camera.p2 - camera.p0) / height; //same as vector u but from top to bottom
-			//Line(0, 0, 512, 512, 0x00ff00);
+			//when x=0 on the debugscreen this will create the line from the camera to the toprightcorner. In the scene this represents the ray going through the middle left of the screenplane.
 			for (int x = 0; x < width; x += 10)
 			{
-				ray pixelray = new ray(origin, direction + x * u + 256 * v); //256 to always get middle row
+				ray pixelray = new ray(origin, direction + (x-width/2) * u);
 				intersect intersection = scene.calcIntersection(pixelray, 0);
 				ray r;
 				if (intersection.intersection_made)
 				{
 					Vector3 tempVect = new Vector3(intersection.point - intersection.r.O);
-					r = new ray(pixelray.O, pixelray.D, (float)Math.Sqrt(Math.Pow(tempVect.X, 2) + (Math.Pow(tempVect.Y, 2)) + (Math.Pow(tempVect.Z, 2)))); //ray is saved with the distance traveled (intersection)
-					float x1 = (r.O.X * (512f / 10f) + 256);
-					float y1 = (r.O.Z * -(512f / 10f) + 512);
-					float x2 = (x1 + r.D.X * 100f);
-					float y2 = (y1 + r.D.Z * -100f);
+					r = new ray(pixelray.O, pixelray.D, tempVect.Length); //ray is saved with the distance traveled (intersection)
+					float x1 = width / 2;
+					float y1 = height;
+					float full_length = 10*new Vector2(((float)x)/width-0.5f, 1).Length;
+					float x2 = (width / 2) + (x - width / 2) * (r.t / full_length);
+					float y2 = height*(1-(r.t / full_length));
 					Line((int)x1, (int)y1, (int)x2, (int)y2, 0x00ff00); //groen
 				}
 				else
@@ -304,7 +303,7 @@ namespace Template
 					float x1 = width/2;
 					float y1 = height;
 					float x2 = x;
-					float y2 = 0; //units to pixels?..
+					float y2 = 0;
 					Line((int)x1, (int)y1, (int)x2, (int)y2, 0xff0000); //rood
 				}
 			}
@@ -313,7 +312,7 @@ namespace Template
 				if (primitive is sphere)
                 {
 					sphere s = (sphere)primitive;
-					float center_x = (s.pos.X * (512f / 10f) + 256);
+					//float center_x = (s.pos.X -origin.X)*;
 					float center_y = (s.pos.Z * -(512f / 10f) + 512);
 					//DrawCircle(center_x, center_y, s.r, new Color4(255, 0, 0, 100)); //... werkt dit? nee
 				}
