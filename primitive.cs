@@ -24,6 +24,10 @@ namespace Template
 		{
 			return MixColor(f2intcolor(color[0]), f2intcolor(color[1]), f2intcolor(color[2]));
 		}
+		public primitive()
+		{
+
+		}
 	}
 	public class sphere : primitive
 	{

@@ -247,6 +247,8 @@ namespace Template
 			Vector3 v=(camera.p2-camera.p0)/height; //same as vector u but from top to bottom
 			//for each x and y update the pixel to what is seen in the scene.
 			int i = 0;
+			primitive[] primitives = new primitive[scene.primitives.Count];
+			scene.primitives.CopyTo(primitives);
 			for (int y=0;y<height;y++) for (int x = 0; x < width; x++)
             {
 				//make a new ray given the origin,direction,u,v
@@ -255,24 +257,32 @@ namespace Template
 				//check if intersection is made
 				if (intersection.intersection_made)
 				{
-					//Vector3 tempVect = new Vector3(intersection.point - intersection.r.O);
-						
-					//pixelsRayAll.Add(new ray(pixelray.O, pixelray.D, (float)Math.Sqrt(Math.Pow(tempVect.X,2) + (Math.Pow(tempVect.Y, 2)) + (Math.Pow(tempVect.Z, 2))))); //ray is saved with the distance traveled (intersection)
-
+					//removing the object the ray hit
+					primitive obj = intersection.obj;
+					scene.primitives.Remove(intersection.obj);
+					
 					//update color based on the color of the object
 					Vector3 color = intersection.obj.rgbcolor;
 
 
 					//check if the point of intersection is illuminated by a lightsource
 					bool light = false;
+					ray test;
+					intersect test2;
+						float test3;
 					foreach (light lightray in scene.lightSources)
 					{
-						ray temp = new ray(intersection.point, lightray.pos - intersection.point);
-						if (scene.calcIntersection(temp,0).intersection_made != true)
+						Vector3 lightD = lightray.pos - intersection.point;
+						ray lightr = new ray(intersection.point, lightD);
+						if (scene.calcIntersection(lightr,0).r.t>lightD.Length)
 						{
 								light = true;
+								test = lightr;
 						}
-					}
+							test = lightr;
+							test2 = scene.calcIntersection(lightr, 0);
+							test3 = lightD.Length;
+						}
 					if (light)
                     {
 						pixels[i] = primitive.vec2intcolor(color);
@@ -280,6 +290,14 @@ namespace Template
                     else
                     {
 							pixels[i] = 0x000000;
+                    }
+					if (obj is sphere)
+                    {
+						scene.primitives.Add((sphere)obj);
+                    }
+                    else
+                    {
+						scene.primitives.Add((plane)obj);
                     }
 				}
 				// if no intersection is found the pixel will be set to white

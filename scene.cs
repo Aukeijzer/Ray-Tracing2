@@ -68,10 +68,10 @@ namespace Template
 			sphere s2 = new sphere(new Vector3(0, 0, 6f), 1f);
 			sphere s3 = new sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
 			plane p1 = new plane(new Vector3(0, 1, 0), -2);
-			light l1 = new light(new Vector3(9, 9, 1), 1f);
+			light l1 = new light(new Vector3(0, 0, 0), 1f);
 			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);
 			lightSources.Add(l1);
-			lightSources.Add(l2);
+			//lightSources.Add(l2);
 			primitives.Add(s1);
 			primitives.Add(s2);
 			primitives.Add(s3);
@@ -105,7 +105,7 @@ namespace Template
 					{
 						//normally t=t1, however in the edge case where te camera is inside the sphere the t=t2
 						float t1= -(b + (float)Math.Sqrt(d)) / (2 * a);
-						if (t1 >= 0)
+						if (t1 > 0)
                         {
 							intersection = true;
 							t = t1;
@@ -113,7 +113,7 @@ namespace Template
                         else
                         {
 							float t2= -(b - (float)Math.Sqrt(d)) / (2 * a);
-							if (t2 >= 0)
+							if (t2 > 0)
                             {
 								intersection = true;
 								t = t2;
@@ -146,7 +146,7 @@ namespace Template
 							int cum = 69;
                         }
 						float t1 = -(Vector3.Dot(N,O) + d) / ndotd;
-						if (t1 >= 0)
+						if (t1 > 0)
                         {
 							intersection = true;
 							t = t1;
