@@ -300,6 +300,7 @@ namespace Template
         }
 
 		//Draws the debug screen, giving a topdown view of of the plane horizontal to the direction of the camera in the scene.
+		//For some reason, the debug scene only draws the lines until the ray traced spheres are hit or something, making them not completely line up with the actual spheres. We could not figure out what caused this bug unfortunately.
 		public void drawDebug(Scene scene)
         {
 			Camera camera = scene.camera;
@@ -309,7 +310,7 @@ namespace Template
 			Vector3 u = (camera.p1 - camera.p0) / width;	//for each pixel to right the new direction of the ray is the direction of the old one + u
 			
 			//When x=0. on the debugscreen this will create the line from the camera to the topleftcorner. In the scene this represents the ray going through the middle left of the screenplane.
-			for (int x = 0; x < width; x ++)
+			for (int x = 0; x < width; x +=8)
 			{
 				Ray pixelray = new Ray(origin, direction + (x-width/2) * u);
 				Intersect intersection = scene.calcIntersection(pixelray, 0,scene.primitives);
@@ -318,12 +319,11 @@ namespace Template
 				if (intersection.intersection_made && intersection.obj is Sphere)
 				{
 					r = new Ray(intersection.r.O, intersection.r.D, intersection.r.t); //Ray is saved with the distance traveled (intersection).
-					float x1 = width / 2;
-					float y1 = height;
-					float x2 = (width / 2) + r.D.X * r.t * width/2/10;
-					float y2 = (height) - r.D.Z* r.t * height/10 ;
+					float x1 = width / 2 + intersection.r.O.X * width/10/2;
+					float y1 = height - intersection.r.O.Z * height/10;
+					float x2 = (width / 2) + r.D.X * r.t * width/2/10 + intersection.r.O.X * width / 10 / 2;
+					float y2 = (height) - r.D.Z* r.t * height/10 - intersection.r.O.Z * height / 10;
 					Line((int)x1, (int)y1, (int)x2, (int)y2, 0x00ff00);
-						
 				}
 				else
 				{
@@ -346,7 +346,9 @@ namespace Template
             }
 				
 			float half_screenplane = (float)(Math.Tan(0.5f * camera.fov) * camera.d)*width/10/2;
-			Line((int)(width/2 -half_screenplane), (int)(height -camera.d*height/10), (int)(width/2 +half_screenplane), (int)(height -camera.d * height / 10), 0x0000ff);
+			Line((int)(width / 2 - half_screenplane), (int)(height - camera.d * height / 10)+1, (int)(width / 2 + half_screenplane), (int)(height - camera.d * height / 10)+1, 0x0000ff);
+			Line((int)(width / 2 - half_screenplane), (int)(height - camera.d * height / 10), (int)(width / 2 + half_screenplane), (int)(height - camera.d * height / 10), 0x0000ff);
+			Line((int)(width / 2 - half_screenplane), (int)(height - camera.d * height / 10)-1, (int)(width / 2 + half_screenplane), (int)(height - camera.d * height / 10)-1, 0x0000ff);
 		}
 	}
 
