@@ -40,9 +40,11 @@ namespace Template
 			//Called during application initialization.
 			GL.Hint( HintTarget.PerspectiveCorrectionHint, HintMode.Nicest );
 			ClientSize = new Size( 1024, 512 );
-			app = new MyApplication();
-			app.screen = new Surface( Width, Height );
-			Sprite.target = app.screen;
+            app = new MyApplication
+            {
+                screen = new Surface(Width, Height)
+            };
+            Sprite.target = app.screen;
 			screenID = app.screen.GenTexture();
 			app.Init();
 		}
@@ -147,7 +149,6 @@ namespace Template
 			GL.Disable(EnableCap.Texture2D);
 			GL.Clear(ClearBufferMask.DepthBufferBit);
 			GL.PushMatrix();
-			app.RenderGL();
 			GL.PopMatrix();
 
 			//Tell OpenTK we're done rendering.
@@ -156,8 +157,12 @@ namespace Template
 
 		public static void Main( string[] args )
 		{
-			//Entry point.
-			using( OpenTKApp app = new OpenTKApp() ) { app.Run( 30.0, 0.0 ); }
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+            //Entry point.
+            using ( OpenTKApp app = new OpenTKApp() ) { app.Run( 30.0, 0.0 ); }
 		}
 	}
 }
