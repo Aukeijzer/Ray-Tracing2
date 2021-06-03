@@ -7,6 +7,7 @@ using OpenTK;
 
 namespace Template
 {
+	//Masterclass for the primitives.
 	public class primitive
 	{
 		public Vector3 rgbcolor;
@@ -25,10 +26,13 @@ namespace Template
 			return MixColor(f2intcolor(color[0]), f2intcolor(color[1]), f2intcolor(color[2]));
 		}
 	}
+
+	//Subclass for spheres, with its own constructor functions. When gives an rgb value, it is considered non-reflective.
 	public class sphere : primitive
 	{
 		public Vector3 pos;
 		public float r;
+
 		public sphere(Vector3 position, float radius)
 		{
 			pos = position;
@@ -44,6 +48,7 @@ namespace Template
 		}
 	}
 
+	//Subclass for planes, with its own constructor functions. When gives an rgb value, it is considered non-reflective.
 	public class plane : primitive
 	{
 		public Vector3 normal;
@@ -63,5 +68,4 @@ namespace Template
 			rgbcolor = rgb;
 		}
 	}
-
 }
