@@ -242,9 +242,6 @@ namespace Template
             {
 				//make a new ray given the origin,direction,u,v
 				ray pixelray = new ray(origin, direction + x * u + y * v);
-
-					
-
 				intersect intersection = scene.calcIntersection(pixelray,0);
 				//check if intersection is made
 				if (intersection.intersection_made)
@@ -255,18 +252,26 @@ namespace Template
 
 					//update color based on the color of the object
 					Vector3 color = intersection.obj.rgbcolor;
-					pixels[i] = primitive.vec2intcolor(color);
-						
+
+
 					//check if the point of intersection is illuminated by a lightsource
+					bool light = false;
 					foreach (light lightray in scene.lightSources)
 					{
 						ray temp = new ray(intersection.point, lightray.pos - intersection.point);
-						if (scene.calcIntersection(temp,0).intersection_made == true)
+						if (scene.calcIntersection(temp,0).intersection_made != true)
 						{
-							color = new Vector3(0, 0, 0);
+								light = true;
 						}
 					}
-
+					if (light)
+                    {
+						pixels[i] = primitive.vec2intcolor(color);
+					}
+                    else
+                    {
+							pixels[i] = 0x000000;
+                    }
 				}
 				// if no intersection is found the pixel will be set to white
 				else pixels[i] = 0xffffff; //ray is saved with infinite distance traveled (no intersection)
@@ -284,13 +289,9 @@ namespace Template
 			for (int x = 0; x < width; x += 2)
 			{
 				ray pixelray = new ray(origin, direction + (x-width/2) * u);
-				if (x == 512)
-                {
-					int cum = 69;
-                }
 				intersect intersection = scene.calcIntersection(pixelray, 0);
 				ray r;
-				if (intersection.intersection_made)
+				if (intersection.intersection_made && intersection.obj is sphere)
 				{
 					Vector3 tempVect = new Vector3(intersection.point - intersection.r.O);
 					r = new ray(pixelray.O, pixelray.D, tempVect.Length); //ray is saved with the distance traveled (intersection)

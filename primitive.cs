@@ -29,7 +29,6 @@ namespace Template
 	{
 		public Vector3 pos;
 		public float r;
-		public bool refl;
 		public sphere(Vector3 position, float radius)
 		{
 			pos = position;
@@ -49,7 +48,6 @@ namespace Template
 	{
 		public Vector3 normal;
 		public float t;
-		public bool refl;
 
 		public plane(Vector3 basenormal, float distance)
 		{
