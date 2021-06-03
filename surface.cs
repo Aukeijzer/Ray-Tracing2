@@ -257,7 +257,7 @@ namespace Template
             {
 				//Make a new ray given the origin, direction, u, v.
 				Ray pixelray = new Ray(origin, direction + x * u + y * v);
-				Intersect intersection = scene.calcIntersection(pixelray,0);
+				Intersect intersection = scene.calcIntersection(pixelray,0,scene.primitives);
 
 				//Check if intersection is made.
 				if (intersection.intersection_made)
@@ -271,23 +271,16 @@ namespace Template
 
 					//Check if the point of intersection is illuminated by a lightsource.
 					bool light = false;
-					Ray test;
-					Intersect test2;
-					float test3;
 
 					foreach (Light lights in scene.lightSources)
 					{
 						Vector3 lightD = lights.pos - intersection.point;
 						Ray lightr = new Ray(intersection.point, lightD);
-						if (scene.calcIntersection(lightr,0).r.t>lightD.Length)
+						if (scene.calcIntersection(lightr,0,scene.primitives).r.t>lightD.Length)
 						{
 								light = true;
-								test = lightr;
 						}
-							test = lightr;
-							test2 = scene.calcIntersection(lightr, 0);
-							test3 = lightD.Length;
-						}
+					}
 					if (light)
                     {
 						pixels[i] = Primitive.Vec2intcolor(color);
@@ -319,7 +312,7 @@ namespace Template
 			for (int x = 0; x < width; x ++)
 			{
 				Ray pixelray = new Ray(origin, direction + (x-width/2) * u);
-				Intersect intersection = scene.calcIntersection(pixelray, 0);
+				Intersect intersection = scene.calcIntersection(pixelray, 0,scene.primitives);
 				Ray r;
 
 				if (intersection.intersection_made && intersection.obj is Sphere)

@@ -73,8 +73,8 @@ namespace Template
 			Sphere s2 = new Sphere(new Vector3(0, 0, 6f), 1f);
 			Sphere s3 = new Sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
 			Plane p1 = new Plane(new Vector3(0, 1, 0), -2);
-			Light l1 = new Light(new Vector3(0, 0, 0), 1f);
-			//Light l2 = new Light(new Vector3(-9, 6, 2), 0.6f);
+			Light l1 = new Light(new Vector3(6, -6, 6), 1f);
+			Light l2 = new Light(new Vector3(-9, 6, 2), 0.6f);
 			lightSources.Add(l1);
 			//lightSources.Add(l2);
 			primitives.Add(s1);
@@ -85,7 +85,7 @@ namespace Template
 		}
 
 		//For a given ray gives the nearest intersection in a scene with a primitive. Returns this as n intersection object.
-		public Intersect calcIntersection(Ray r,int i)
+		public Intersect calcIntersection(Ray r,int i,List<Primitive> primlist)
 		{
 			//If true, then the ray met a primitive.
 			bool intersection=false;
@@ -99,7 +99,7 @@ namespace Template
 			//t is calculated as the distance between the origin of the ray and the intersection.
 			float t=1e37f;
 
-			foreach (Primitive P in primitives)
+			foreach (Primitive P in primlist)
 			{
                 //Calculating intersections for all spheres in the scene.
                 if (P is Sphere s)
@@ -194,7 +194,9 @@ namespace Template
 					Ray r2 = new Ray(point, D2);
 
 					//Calling calcIntersection to see where the new ray will end up.
-					intersect = calcIntersection(r2, i + 1);
+					List<Primitive> new_primlist = new List<Primitive>(primitives);
+					new_primlist.Remove(obj);
+					intersect = calcIntersection(r2, i + 1,new_primlist);
 				}
 			}
             else
