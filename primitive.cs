@@ -25,10 +25,6 @@ namespace Template
 		{
 			return MixColor(F2intcolor(color[0]), F2intcolor(color[1]), F2intcolor(color[2]));
 		}
-		public primitive()
-		{
-
-		}
 	}
 
 	//Subclass for spheres, with its own constructor functions. When gives an rgb value, it is considered non-reflective.

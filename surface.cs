@@ -238,27 +238,27 @@ namespace Template
 			return (int) (y / 2 * height);
         }
 		//puts what is viewed through the camera of the scene in the screen.
-		public void drawscene(scene scene)
+		public void drawscene(Scene scene)
         {
-			camera camera = scene.camera;
+			Camera camera = scene.camera;
 			Vector3 origin = camera.E; //where the camera is situated
 			Vector3 direction = camera.p0-origin; //this is the direction of the ray in the topright corner of the screen
 			Vector3 u=(camera.p1-camera.p0)/width; //for each pixel to right the new direction of the ray is the direction of the old one + u
 			Vector3 v=(camera.p2-camera.p0)/height; //same as vector u but from top to bottom
 			//for each x and y update the pixel to what is seen in the scene.
 			int i = 0;
-			primitive[] primitives = new primitive[scene.primitives.Count];
+			Primitive[] primitives = new Primitive[scene.primitives.Count];
 			scene.primitives.CopyTo(primitives);
 			for (int y=0;y<height;y++) for (int x = 0; x < width; x++)
             {
 				//make a new ray given the origin,direction,u,v
-				ray pixelray = new ray(origin, direction + x * u + y * v);
-				intersect intersection = scene.calcIntersection(pixelray,0);
+				Ray pixelray = new Ray(origin, direction + x * u + y * v);
+				Intersect intersection = scene.calcIntersection(pixelray,0);
 				//check if intersection is made
 				if (intersection.intersection_made)
 				{
 					//removing the object the ray hit
-					primitive obj = intersection.obj;
+					Primitive obj = intersection.obj;
 					scene.primitives.Remove(intersection.obj);
 					
 					//update color based on the color of the object
@@ -267,13 +267,13 @@ namespace Template
 
 					//check if the point of intersection is illuminated by a lightsource
 					bool light = false;
-					ray test;
-					intersect test2;
+					Ray test;
+					Intersect test2;
 						float test3;
-					foreach (light lightray in scene.lightSources)
+					foreach (Light lights in scene.lightSources)
 					{
-						Vector3 lightD = lightray.pos - intersection.point;
-						ray lightr = new ray(intersection.point, lightD);
+						Vector3 lightD = lights.pos - intersection.point;
+						Ray lightr = new Ray(intersection.point, lightD);
 						if (scene.calcIntersection(lightr,0).r.t>lightD.Length)
 						{
 								light = true;
@@ -285,20 +285,14 @@ namespace Template
 						}
 					if (light)
                     {
-						pixels[i] = primitive.vec2intcolor(color);
+						pixels[i] = Primitive.Vec2intcolor(color);
 					}
                     else
                     {
 							pixels[i] = 0x000000;
                     }
-					if (obj is sphere)
-                    {
-						scene.primitives.Add((sphere)obj);
-                    }
-                    else
-                    {
-						scene.primitives.Add((plane)obj);
-                    }
+					//re-adding the removed object
+					scene.primitives.Add(obj);
 				}
 				// if no intersection is found the pixel will be set to white
 				else pixels[i] = 0xffffff; //ray is saved with infinite distance traveled (no intersection)
@@ -306,21 +300,21 @@ namespace Template
             }
         }
 		//draws the debug screen, giving a topdown view of of the plane horizontal to the direction of the camera in the scene.
-		public void drawdebug(scene scene)
+		public void drawdebug(Scene scene)
         {
-			camera camera = scene.camera;
+			Camera camera = scene.camera;
 			Vector3 origin = camera.E; //where the camera is situated
 			Vector3 direction = camera.C - origin; //this is the direction of the ray through the middle of the screen
 			Vector3 u = (camera.p1 - camera.p0) / width; //for each pixel to right the new direction of the ray is the direction of the old one + u
 			//when x=0. on the debugscreen this will create the line from the camera to the topleftcorner. In the scene this represents the ray going through the middle left of the screenplane.
 			for (int x = 0; x < width; x ++)
 			{
-				ray pixelray = new ray(origin, direction + (x-width/2) * u);
-				intersect intersection = scene.calcIntersection(pixelray, 0);
-				ray r;
-				if (intersection.intersection_made && intersection.obj is sphere)
+				Ray pixelray = new Ray(origin, direction + (x-width/2) * u);
+				Intersect intersection = scene.calcIntersection(pixelray, 0);
+				Ray r;
+				if (intersection.intersection_made && intersection.obj is Sphere)
 				{
-					r = new ray(intersection.r.O, intersection.r.D, intersection.r.t); //ray is saved with the distance traveled (intersection)
+					r = new Ray(intersection.r.O, intersection.r.D, intersection.r.t); //ray is saved with the distance traveled (intersection)
 					float x1 = width / 2;
 					float y1 = height;
 					float x2 = (width / 2) + r.D.X * r.t * width/2/10;
@@ -338,11 +332,11 @@ namespace Template
 					Line((int)x1, (int)y1, (int)x2, (int)y2, 0xff0000); //rood
 				}
 			}
-			foreach (primitive primitive in scene.primitives)
+			foreach (Primitive primitive in scene.primitives)
             {
-				if (primitive is sphere)
+				if (primitive is Sphere)
                 {
-					sphere s = (sphere)primitive;
+					Sphere s = (Sphere)primitive;
 					float center_x = (s.pos.X*width/2/10 + width/2);
 					float center_y = height - (s.pos.Z*height/10); //- camera.d * height / 10
 					DrawCircle(center_x, center_y, s.r*width/2/10);
