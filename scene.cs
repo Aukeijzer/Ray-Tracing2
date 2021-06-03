@@ -67,14 +67,14 @@ namespace Template
 		//Scene constructor function.
 		public Scene()
 		{
-			camera = new camera(new Vector3(0, 0, 0), 120, new Vector3(0, 0, 1));
-			maxreflect = 10000;
-			sphere s1 = new sphere(new Vector3(-3f, 0, 6f), 1f, new Vector3(1,0,0));
-			sphere s2 = new sphere(new Vector3(0, 0, 6f), 1f);
-			sphere s3 = new sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
-			plane p1 = new plane(new Vector3(0, 1, 0), -2);
-			light l1 = new light(new Vector3(0, 0, 0), 1f);
-			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);
+			camera = new Camera(new Vector3(0, 0, 0), 120, new Vector3(0, 0, 1));
+			maxReflect = 10000;
+			Sphere s1 = new Sphere(new Vector3(-3f, 0, 6f), 1f, new Vector3(1,0,0));
+			Sphere s2 = new Sphere(new Vector3(0, 0, 6f), 1f);
+			Sphere s3 = new Sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
+			Plane p1 = new Plane(new Vector3(0, 1, 0), -2);
+			Light l1 = new Light(new Vector3(0, 0, 0), 1f);
+			//Light l2 = new Light(new Vector3(-9, 6, 2), 0.6f);
 			lightSources.Add(l1);
 			//lightSources.Add(l2);
 			primitives.Add(s1);

@@ -23,9 +23,9 @@ namespace Template
 		//Function that renders one frame (called every frame in the OnRenderFrame() function).
 		public void Tick()
 		{
-			rtScreen.drawScene(Scene);
+			rtScreen.drawScene(scene);
 			rtScreen.CopyTo(screen, 0, 0);
-			debugScreen.drawDebug(Scene);
+			debugScreen.drawDebug(scene);
 			debugScreen.CopyTo(screen, 512, 0);
 		}
 	}

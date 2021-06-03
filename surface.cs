@@ -15,14 +15,16 @@ namespace Template
 		static bool fontReady = false;
 		static Surface font;
 		static int[] fontRedir;
-		// surface constructor
+
+		//Surface constructor.
 		public Surface(int w, int h)
 		{
 			width = w;
 			height = h;
 			pixels = new int[w * h];
 		}
-		// surface constructor using a file
+
+		//Surface constructor using a file.
 		public Surface(string fileName)
 		{
 			Bitmap bmp = new Bitmap(fileName);
@@ -30,11 +32,11 @@ namespace Template
 			height = bmp.Height;
 			pixels = new int[width * height];
 			BitmapData data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			IntPtr ptr = data.Scan0;
 			System.Runtime.InteropServices.Marshal.Copy(data.Scan0, pixels, 0, width * height);
 			bmp.UnlockBits(data);
 		}
-		// create an OpenGL texture
+
+		//Create an OpenGL texture.
 		public int GenTexture()
 		{
 			int id = GL.GenTexture();
@@ -44,12 +46,14 @@ namespace Template
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, pixels);
 			return id;
 		}
-		// clear the surface
+
+		//Clear the surface.
 		public void Clear(int c)
 		{
 			for (int s = width * height, p = 0; p < s; p++) pixels[p] = c;
 		}
-		// copy the surface to another surface
+
+		//Copy the surface to another surface/
 		public void CopyTo(Surface target, int x = 0, int y = 0)
 		{
 			int src = 0;
@@ -83,8 +87,8 @@ namespace Template
 				}
 			}
 		}
-		// draw a rectangle
 
+		//Draw a circle.
 		public void DrawCircle(float x, float y, float radius) //http://csharphelper.com/blog/2019/03/use-sines-and-cosines-to-draw-circles-and-ellipses-in-c/
 		{
 			float num_theta = 100;
@@ -110,6 +114,8 @@ namespace Template
 				}
             }
 		}
+
+		//Draw a box.
 		public void Box(int x1, int y1, int x2, int y2, int c)
 		{
 			int dest = y1 * width;
@@ -126,7 +132,8 @@ namespace Template
 				pixels[dest2 + x] = c;
 			}
 		}
-		// draw a solid bar
+
+		//Draw a solid bar.
 		public void Bar(int x1, int y1, int x2, int y2, int c)
 		{
 			int dest = y1 * width;
@@ -135,13 +142,15 @@ namespace Template
 					pixels[dest + x] = c;
 				}
 		}
-		// helper function for line clipping
+
+		//Helper function for line clipping.
 		int OUTCODE(int x, int y)
 		{
 			int xmin = 0, ymin = 0, xmax = width - 1, ymax = height - 1;
 			return (((x) < xmin) ? 1 : (((x) > xmax) ? 2 : 0)) + (((y) < ymin) ? 4 : (((y) > ymax) ? 8 : 0));
 		}
-		// draw a line, clipped to the window
+
+		//Draw a line, clipped to the window.
 		public void Line(int x1, int y1, int x2, int y2, int c)
 		{
 			int xmin = 0, ymin = 0, xmax = width - 1, ymax = height - 1;
@@ -191,7 +200,8 @@ namespace Template
 				}
 			}
 		}
-		// plot a single pixel
+
+		//Plot a single pixel.
 		public void Plot(int x, int y, int c)
 		{
 			if ((x >= 0) && (y >= 0) && (x < width) && (y < height))
@@ -199,7 +209,8 @@ namespace Template
 				pixels[x + y * width] = c;
 			}
 		}
-		// print a string
+
+		//Print a string.
 		public void Print(string t, int x, int y, int c)
 		{
 			if (!fontReady)
@@ -226,50 +237,44 @@ namespace Template
 					}
 			}
 		}
-		int TX(float x)
-		{
-			x++;
-			return (int) (x / 2 * width);
-		}
-		int TY(float y)
-        {
-			y = -y;
-			y++;
-			return (int) (y / 2 * height);
-        }
-		//puts what is viewed through the camera of the scene in the screen.
-		public void drawscene(Scene scene)
+		
+		//Puts what is viewed through the camera of the scene in the screen.
+		public void drawScene(Scene scene)
         {
 			Camera camera = scene.camera;
-			Vector3 origin = camera.E; //where the camera is situated
-			Vector3 direction = camera.p0-origin; //this is the direction of the ray in the topright corner of the screen
-			Vector3 u=(camera.p1-camera.p0)/width; //for each pixel to right the new direction of the ray is the direction of the old one + u
-			Vector3 v=(camera.p2-camera.p0)/height; //same as vector u but from top to bottom
-			//for each x and y update the pixel to what is seen in the scene.
+
+			Vector3 origin = camera.E;					//Where the camera is situated.
+			Vector3 direction = camera.p0-origin;		//This is the direction of the ray in the topright corner of the screen.
+			Vector3 u=(camera.p1-camera.p0)/width;		//For each pixel to right the new direction of the ray is the direction of the old one + u.
+			Vector3 v=(camera.p2-camera.p0)/height;		//Same as vector u but from top to bottom.
+
+			//For each x and y update the pixel to what is seen in the scene.
 			int i = 0;
 			Primitive[] primitives = new Primitive[scene.primitives.Count];
 			scene.primitives.CopyTo(primitives);
+
 			for (int y=0;y<height;y++) for (int x = 0; x < width; x++)
             {
-				//make a new ray given the origin,direction,u,v
+				//Make a new ray given the origin, direction, u, v.
 				Ray pixelray = new Ray(origin, direction + x * u + y * v);
 				Intersect intersection = scene.calcIntersection(pixelray,0);
-				//check if intersection is made
+
+				//Check if intersection is made.
 				if (intersection.intersection_made)
 				{
-					//removing the object the ray hit
+					//Removing the object the ray hit.
 					Primitive obj = intersection.obj;
 					scene.primitives.Remove(intersection.obj);
 					
-					//update color based on the color of the object
+					//Update color based on the color of the object.
 					Vector3 color = intersection.obj.rgbcolor;
 
-
-					//check if the point of intersection is illuminated by a lightsource
+					//Check if the point of intersection is illuminated by a lightsource.
 					bool light = false;
 					Ray test;
 					Intersect test2;
-						float test3;
+					float test3;
+
 					foreach (Light lights in scene.lightSources)
 					{
 						Vector3 lightD = lights.pos - intersection.point;
@@ -289,80 +294,84 @@ namespace Template
 					}
                     else
                     {
-							pixels[i] = 0x000000;
+						pixels[i] = 0x000000;
                     }
-					//re-adding the removed object
+					//Re-adding the removed object.
 					scene.primitives.Add(obj);
 				}
-				// if no intersection is found the pixel will be set to white
-				else pixels[i] = 0xffffff; //ray is saved with infinite distance traveled (no intersection)
+
+				//If no intersection is found the pixel will be set to white.
+				else pixels[i] = 0xffffff; //Ray is saved with infinite distance traveled (no intersection).
 				i++;
             }
         }
-		//draws the debug screen, giving a topdown view of of the plane horizontal to the direction of the camera in the scene.
-		public void drawdebug(Scene scene)
+
+		//Draws the debug screen, giving a topdown view of of the plane horizontal to the direction of the camera in the scene.
+		public void drawDebug(Scene scene)
         {
 			Camera camera = scene.camera;
-			Vector3 origin = camera.E; //where the camera is situated
-			Vector3 direction = camera.C - origin; //this is the direction of the ray through the middle of the screen
-			Vector3 u = (camera.p1 - camera.p0) / width; //for each pixel to right the new direction of the ray is the direction of the old one + u
-			//when x=0. on the debugscreen this will create the line from the camera to the topleftcorner. In the scene this represents the ray going through the middle left of the screenplane.
+
+			Vector3 origin = camera.E;						//Where the camera is situated.
+			Vector3 direction = camera.C - origin;			//this is the direction of the ray through the middle of the screen.
+			Vector3 u = (camera.p1 - camera.p0) / width;	//for each pixel to right the new direction of the ray is the direction of the old one + u
+			
+			//When x=0. on the debugscreen this will create the line from the camera to the topleftcorner. In the scene this represents the ray going through the middle left of the screenplane.
 			for (int x = 0; x < width; x ++)
 			{
 				Ray pixelray = new Ray(origin, direction + (x-width/2) * u);
 				Intersect intersection = scene.calcIntersection(pixelray, 0);
 				Ray r;
+
 				if (intersection.intersection_made && intersection.obj is Sphere)
 				{
-					r = new Ray(intersection.r.O, intersection.r.D, intersection.r.t); //ray is saved with the distance traveled (intersection)
+					r = new Ray(intersection.r.O, intersection.r.D, intersection.r.t); //Ray is saved with the distance traveled (intersection).
 					float x1 = width / 2;
 					float y1 = height;
 					float x2 = (width / 2) + r.D.X * r.t * width/2/10;
 					float y2 = (height) - r.D.Z* r.t * height/10 ;
-					Line((int)x1, (int)y1, (int)x2, (int)y2, 0x00ff00); //groen
+					Line((int)x1, (int)y1, (int)x2, (int)y2, 0x00ff00);
 						
 				}
 				else
 				{
-					r = pixelray; //ray is saved with infinite distance traveled (no intersection)
+					r = pixelray; //Ray is saved with infinite distance traveled (no intersection).
 					float x1 = width/2;
 					float y1 = height;
 					float x2 = (width / 2) + r.D.X * 100 * width / 2 / 10;
 					float y2 = (height) - r.D.Z * 100 * height / 10;
-					Line((int)x1, (int)y1, (int)x2, (int)y2, 0xff0000); //rood
+					Line((int)x1, (int)y1, (int)x2, (int)y2, 0xff0000);
 				}
 			}
 			foreach (Primitive primitive in scene.primitives)
             {
-				if (primitive is Sphere)
+                if (primitive is Sphere s)
                 {
-					Sphere s = (Sphere)primitive;
-					float center_x = (s.pos.X*width/2/10 + width/2);
-					float center_y = height - (s.pos.Z*height/10); //- camera.d * height / 10
-					DrawCircle(center_x, center_y, s.r*width/2/10);
-				}
-			}
+                    float center_x = (s.pos.X * width / 2 / 10 + width / 2);
+                    float center_y = height - (s.pos.Z * height / 10);
+                    DrawCircle(center_x, center_y, s.r * width / 2 / 10);
+                }
+            }
 				
 			float half_screenplane = (float)(Math.Tan(0.5f * camera.fov) * camera.d)*width/10/2;
-
-			Line((int)(width/2 -half_screenplane), (int)(height -camera.d*height/10), (int)(width/2 +half_screenplane), (int)(height -camera.d * height / 10), 0x0000ff); //draws screenplane (255 = blue)
+			Line((int)(width/2 -half_screenplane), (int)(height -camera.d*height/10), (int)(width/2 +half_screenplane), (int)(height -camera.d * height / 10), 0x0000ff);
 		}
 	}
 
 
-
 	public class Sprite
 	{
-		Surface bitmap;
+        readonly Surface bitmap;
 		static public Surface target;
-		int textureID;
-		// sprite constructor
+        readonly int textureID;
+		
+		//Sprite constructor.
 		public Sprite(string fileName)
 		{
 			bitmap = new Surface(fileName);
 			textureID = bitmap.GenTexture();
 		}
-		// draw a sprite with scaling
+
+		//Draw a sprite with scaling.
 		public void Draw(float x, float y, float scale = 1.0f)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, textureID);
@@ -380,6 +389,5 @@ namespace Template
 			GL.End();
 			GL.Disable(EnableCap.Blend);
 		}
-
 	}
 }
