@@ -7,6 +7,7 @@ using OpenTK;
 
 namespace Template
 {
+    //Class for the light objects, used to calculate shadows and reflections.
     public class light
     {
         public Vector3 pos;
