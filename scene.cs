@@ -74,9 +74,9 @@ namespace Template
 			Sphere s3 = new Sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
 			Plane p1 = new Plane(new Vector3(0, 1, 0), -2);
 			Light l1 = new Light(new Vector3(6, -6, 6), 1f);
-			Light l2 = new Light(new Vector3(-9, 6, 2), 0.6f);
-			lightSources.Add(l1);
-			//lightSources.Add(l2);
+			Light l2 = new Light(new Vector3(-9, 6, 6), 0.6f);
+			//lightSources.Add(l1);
+			lightSources.Add(l2);
 			primitives.Add(s1);
 			primitives.Add(s2);
 			primitives.Add(s3);
