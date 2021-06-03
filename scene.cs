@@ -62,11 +62,13 @@ namespace Template
 		//TODO: make less stupid constructor
 		public scene()
 		{
-			camera = new camera(new Vector3(0, 0, 0), 120, new Vector3(0, 0, 1));
+			camera = new camera(new Vector3(0, 0, 0), 110, new Vector3(0, 0, 1));
 			maxreflect = 3;
 			sphere s1 = new sphere(new Vector3(-3f, 0, 6f), 1f, new Vector3(1,0,0));
-			sphere s2 = new sphere(new Vector3(0, 0, 6f), 1f, new Vector3(0, 1, 0));
+			sphere s2 = new sphere(new Vector3(0, 0, 7f), 1f, new Vector3(0, 1, 0));
 			sphere s3 = new sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
+			sphere s4 = new sphere(new Vector3(-4f, 0, 3f), 1f, new Vector3(0, 1, 0));
+			sphere s5 = new sphere(new Vector3(4f, 0, 3f), 1f, new Vector3(1, 0, 0));
 			plane p1 = new plane(new Vector3(0, 1, 0), -2, new Vector3(255, 255, 255));
 			light l1 = new light(new Vector3(9, 9, 1), 1f);
 			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);
@@ -75,6 +77,8 @@ namespace Template
 			primitives.Add(s1);
 			primitives.Add(s2);
 			primitives.Add(s3);
+			primitives.Add(s4);
+			primitives.Add(s5);
 			//primitives.Add(p1);
 		}
 		//for a given ray gives the nearest intersection in a scene with a primitive. returns this as a intersection object.
@@ -178,7 +182,9 @@ namespace Template
             else
             {
 				//if the ray met a primitive who isnt reflective it will
-				if (intersection) { intersect = new intersect(point, obj, r); }
+				if (intersection) { 
+					intersect = new intersect(point, obj, r); 
+				}
 			}
 			return intersect;
 		}

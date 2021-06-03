@@ -85,22 +85,31 @@ namespace Template
 		}
 		// draw a rectangle
 
-		public static void DrawCircle(float x, float y, float radius, Color4 c) //https://stackoverflow.com/questions/46130413/opentk-draw-transparent-circle
+		public void DrawCircle(float x, float y, float radius) //http://csharphelper.com/blog/2019/03/use-sines-and-cosines-to-draw-circles-and-ellipses-in-c/
 		{
-			GL.Enable(EnableCap.Blend);
-			GL.Begin(PrimitiveType.TriangleFan);
-			GL.Color4(c);
-
-			GL.Vertex2(x, y);
-			for (int i = 0; i < 360; i++)
+			float num_theta = 100;
+			List<PointF> points = new List<PointF>();
+			float dtheta = (float)(2 * Math.PI / num_theta);
+			float theta = 0;
+			for (int i = 0; i < num_theta; i++)
 			{
-				GL.Vertex2(x + Math.Cos(i) * radius, y + Math.Sin(i) * radius);
+				float x_new = x+(float)(radius * Math.Cos(theta));
+				float y_new = y+(float)(radius * Math.Sin(theta));
+				points.Add(new PointF(x_new, y_new));
+				theta += dtheta;
 			}
-
-			GL.End();
-			GL.Disable(EnableCap.Blend);
+			for (int q = 0; q<points.Count; q++)
+            {
+				if (q+1 == points.Count)
+                {
+					Line((int)points[q].X, (int)points[q].Y, (int)points[0].X, (int)points[0].Y, 0x0000ff);
+				}
+                else
+                {
+					Line((int)points[q].X, (int)points[q].Y, (int)points[q + 1].X, (int)points[q + 1].Y, 0x0000ff);
+				}
+            }
 		}
-
 		public void Box(int x1, int y1, int x2, int y2, int c)
 		{
 			int dest = y1 * width;
@@ -281,24 +290,21 @@ namespace Template
 			Vector3 direction = camera.C - origin; //this is the direction of the ray through the middle of the screen
 			Vector3 u = (camera.p1 - camera.p0) / width; //for each pixel to right the new direction of the ray is the direction of the old one + u
 			//when x=0. on the debugscreen this will create the line from the camera to the topleftcorner. In the scene this represents the ray going through the middle left of the screenplane.
-			for (int x = 0; x < width; x += 2)
+			for (int x = 0; x < width; x ++)
 			{
 				ray pixelray = new ray(origin, direction + (x-width/2) * u);
-				if (x == 512)
-                {
-					int cum = 69;
-                }
+
 				intersect intersection = scene.calcIntersection(pixelray, 0);
 				ray r;
 				if (intersection.intersection_made)
 				{
-					Vector3 tempVect = new Vector3(intersection.point - intersection.r.O);
-					r = new ray(pixelray.O, pixelray.D, tempVect.Length); //ray is saved with the distance traveled (intersection)
+					r = new ray(intersection.r.O, intersection.r.D, intersection.r.t); //ray is saved with the distance traveled (intersection)
 					float x1 = width / 2;
 					float y1 = height;
 					float x2 = (width / 2) + r.D.X * r.t * width/2/10;
-					float y2 = (height) - camera.d - r.D.Z * r.t  * height/10 ;
+					float y2 = (height) - r.D.Z* r.t * height/10 ;
 					Line((int)x1, (int)y1, (int)x2, (int)y2, 0x00ff00); //groen
+						
 				}
 				else
 				{
@@ -306,7 +312,7 @@ namespace Template
 					float x1 = width/2;
 					float y1 = height;
 					float x2 = (width / 2) + r.D.X * 100 * width / 2 / 10;
-					float y2 = (height) - camera.d - r.D.Z * 100 * height / 10;
+					float y2 = (height) - r.D.Z * 100 * height / 10;
 					Line((int)x1, (int)y1, (int)x2, (int)y2, 0xff0000); //rood
 				}
 			}
@@ -315,13 +321,13 @@ namespace Template
 				if (primitive is sphere)
                 {
 					sphere s = (sphere)primitive;
-					//float center_x = (s.pos.X -origin.X)*;
-					float center_y = (s.pos.Z * -(512f / 10f) + 512);
-					//DrawCircle(center_x, center_y, s.r, new Color4(255, 0, 0, 100)); //... werkt dit? nee
+					float center_x = (s.pos.X*width/2/10 + width/2);
+					float center_y = height - (s.pos.Z*height/10); //- camera.d * height / 10
+					DrawCircle(center_x, center_y, s.r*width/2/10);
 				}
 			}
 				
-			float half_screenplane = (float)(Math.Tan(0.5f * camera.fov) * camera.d)*width/10/2; //fov and d = 0 ????
+			float half_screenplane = (float)(Math.Tan(0.5f * camera.fov) * camera.d)*width/10/2;
 
 			Line((int)(width/2 -half_screenplane), (int)(height -camera.d*height/10), (int)(width/2 +half_screenplane), (int)(height -camera.d * height / 10), 0x0000ff); //draws screenplane (255 = blue)
 		}
