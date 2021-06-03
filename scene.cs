@@ -62,14 +62,12 @@ namespace Template
 		//TODO: make less stupid constructor
 		public scene()
 		{
-			camera = new camera(new Vector3(0, 0, 0), 110, new Vector3(0, 0, 1));
-			maxreflect = 3;
+			camera = new camera(new Vector3(0, 0, 0), 120, new Vector3(0, 0, 1));
+			maxreflect = 10000;
 			sphere s1 = new sphere(new Vector3(-3f, 0, 6f), 1f, new Vector3(1,0,0));
-			sphere s2 = new sphere(new Vector3(0, 0, 7f), 1f, new Vector3(0, 1, 0));
+			sphere s2 = new sphere(new Vector3(0, 0, 6f), 1f);
 			sphere s3 = new sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
-			sphere s4 = new sphere(new Vector3(-4f, 0, 3f), 1f, new Vector3(0, 1, 0));
-			sphere s5 = new sphere(new Vector3(4f, 0, 3f), 1f, new Vector3(1, 0, 0));
-			plane p1 = new plane(new Vector3(0, 1, 0), -2, new Vector3(255, 255, 255));
+			plane p1 = new plane(new Vector3(0, 1, 0), -2);
 			light l1 = new light(new Vector3(9, 9, 1), 1f);
 			light l2 = new light(new Vector3(-9, 6, 2), 0.6f);
 			lightSources.Add(l1);
@@ -77,9 +75,7 @@ namespace Template
 			primitives.Add(s1);
 			primitives.Add(s2);
 			primitives.Add(s3);
-			primitives.Add(s4);
-			primitives.Add(s5);
-			//primitives.Add(p1);
+			primitives.Add(p1);
 		}
 		//for a given ray gives the nearest intersection in a scene with a primitive. returns this as a intersection object.
 		public intersect calcIntersection(ray r,int i)
@@ -136,7 +132,7 @@ namespace Template
 					if (ndotd == 0)
 					{
 						//check if the origin is in the plane(which means N* O+d == 0) and if it is t is set to 0.
-						if (Vector3.Dot(N, O) + d == 0)
+						if (Vector3.Dot(N, O) == 0)
                         {
 							intersection = true;
 							t = 0;
@@ -145,7 +141,11 @@ namespace Template
 					//if ndot!=0 calculate the intersection the regular way
 					else
 					{
-						float t1 = (ndotd + d) / Vector3.Dot(N, O);
+						if (r.D.Y > 0)
+                        {
+							int cum = 69;
+                        }
+						float t1 = -(Vector3.Dot(N,O) + d) / ndotd;
 						if (t1 >= 0)
                         {
 							intersection = true;
@@ -165,7 +165,7 @@ namespace Template
 			if (obj.reflective)
 			{
 				//if the ray has reflected maxreflect amount of times and hits a reflective object it will be assumed the ray didnt meet a non-reflective primitive.
-				if (i > maxreflect)
+				if (i < maxreflect)
 				{
 					//calculating the normal to the surface the ray reflects upon
 					Vector3 normal = new Vector3();
@@ -199,10 +199,19 @@ namespace Template
 		//if an intersection is made between a ray and primitive this constructormethod will store all relevant information in the membervariables.
 		public intersect(Vector3 point,primitive obj, ray r)
 	    {
-			this.point = point;
-			this.obj = obj;
-			this.r = r;
-			this.intersection_made = true;
+			//if the color is zero obj is just an empty intitialized obj
+			if (obj.rgbcolor!=new Vector3(0, 0, 0))
+            {
+				this.point = point;
+				this.obj = obj;
+				this.r = r;
+				this.intersection_made = true;
+			}
+            else
+            {
+				this.r = r;
+				this.intersection_made = false;
+            }
         }
 		//if no intersection is made for a ray this constructor is used.
 		public intersect(ray r)
