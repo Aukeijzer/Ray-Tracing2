@@ -142,14 +142,6 @@ namespace Template
 			GL.TexCoord2( 1.0f, 0.0f ); GL.Vertex2( 1.0f, 1.0f );
 			GL.TexCoord2( 0.0f, 0.0f ); GL.Vertex2( -1.0f, 1.0f );
 			GL.End();
-			
-			
-			//Prepare for generic OpenGL rendering.
-			GL.Enable(EnableCap.DepthTest);
-			GL.Disable(EnableCap.Texture2D);
-			GL.Clear(ClearBufferMask.DepthBufferBit);
-			GL.PushMatrix();
-			GL.PopMatrix();
 
 			//Tell OpenTK we're done rendering.
 			SwapBuffers();

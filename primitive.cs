@@ -19,7 +19,7 @@ namespace Template
 		}
 		public static int F2intcolor(float color)
 		{
-			return Math.Min((int)color * 256, 255);
+			return Math.Min((int)(color * 256f), 255);
 		}
 		public static int Vec2intcolor(Vector3 color)
 		{

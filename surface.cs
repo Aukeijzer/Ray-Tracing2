@@ -270,20 +270,19 @@ namespace Template
 					Vector3 color = intersection.obj.rgbcolor;
 
 					//Check if the point of intersection is illuminated by a lightsource.
-					bool light = false;
-
+					float intensity = 0;
 					foreach (Light lights in scene.lightSources)
 					{
 						Vector3 lightD = lights.pos - intersection.point;
 						Ray lightr = new Ray(intersection.point, lightD);
 						if (scene.calcIntersection(lightr,0,scene.primitives).r.t>lightD.Length)
 						{
-								light = true;
+								intensity += lights.i / (lightD.Length * lightD.Length);
 						}
 					}
-					if (light)
+					if (intensity != 0)
                     {
-						pixels[i] = Primitive.Vec2intcolor(color);
+						pixels[i] = Primitive.Vec2intcolor(color*intensity);
 					}
                     else
                     {
