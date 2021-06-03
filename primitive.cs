@@ -7,7 +7,8 @@ using OpenTK;
 
 namespace Template
 {
-	public class primitive
+	//Masterclass for the primitives.
+	public class Primitive
 	{
 		public Vector3 rgbcolor;
 		public bool reflective=false;
@@ -16,30 +17,33 @@ namespace Template
 		{
 			return (red << 16) + (green << 8) + blue;
 		}
-		public static int f2intcolor(float color)
+		public static int F2intcolor(float color)
 		{
 			return Math.Min((int)color * 256, 255);
 		}
-		public static int vec2intcolor(Vector3 color)
+		public static int Vec2intcolor(Vector3 color)
 		{
-			return MixColor(f2intcolor(color[0]), f2intcolor(color[1]), f2intcolor(color[2]));
+			return MixColor(F2intcolor(color[0]), F2intcolor(color[1]), F2intcolor(color[2]));
 		}
 		public primitive()
 		{
 
 		}
 	}
-	public class sphere : primitive
+
+	//Subclass for spheres, with its own constructor functions. When gives an rgb value, it is considered non-reflective.
+	public class Sphere : Primitive
 	{
 		public Vector3 pos;
 		public float r;
-		public sphere(Vector3 position, float radius)
+
+		public Sphere(Vector3 position, float radius)
 		{
 			pos = position;
 			r = radius;
 			reflective = true;
 		}
-		public sphere(Vector3 position, float radius, Vector3 rgb)
+		public Sphere(Vector3 position, float radius, Vector3 rgb)
 		{
 			pos = position;
 			r = radius;
@@ -48,18 +52,19 @@ namespace Template
 		}
 	}
 
-	public class plane : primitive
+	//Subclass for planes, with its own constructor functions. When gives an rgb value, it is considered non-reflective.
+	public class Plane : Primitive
 	{
 		public Vector3 normal;
 		public float t;
 
-		public plane(Vector3 basenormal, float distance)
+		public Plane(Vector3 basenormal, float distance)
 		{
 			normal = basenormal;
 			t = distance;
 			reflective = true;
 		}
-		public plane(Vector3 basenormal, float distance, Vector3 rgb)
+		public Plane(Vector3 basenormal, float distance, Vector3 rgb)
 		{
 			normal = basenormal;
 			t = distance;
@@ -67,5 +72,4 @@ namespace Template
 			rgbcolor = rgb;
 		}
 	}
-
 }

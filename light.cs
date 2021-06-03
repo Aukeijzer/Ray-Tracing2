@@ -7,12 +7,13 @@ using OpenTK;
 
 namespace Template
 {
-    public class light
+    //Class for the light objects, used to calculate shadows and reflections.
+    public class Light
     {
         public Vector3 pos;
         public float i;
 
-        public light(Vector3 position, float intensity)
+        public Light(Vector3 position, float intensity)
         {
             pos = position;
             i = intensity;
