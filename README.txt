@@ -1,16 +1,12 @@
-﻿
-
->>>>>>DIT ZIT ALLEEN IN DE ROOT DIRECTORY OMDAT HET HANDIG IS. BIJ VERSTUREN ZIP DE README MET DE PROJECTFILE<<<<<<
-				>>>>>>DAARNAAST RUN clean.batch<<<<<<
-
-Project made by:
+﻿Project made by:
 6922554 Auke Roest
-femboy kelvin
+6890237 Max Huijssen
 
-Bonus assignments:
+Bonus assignments: ...
 
-sources:
-Image source: ???
+Sources: 
+http://csharphelper.com/blog/2019/03/use-sines-and-cosines-to-draw-circles-and-ellipses-in-c/ 
+Not directly copied ofcourse, but helped create the drawCricle function.
 
-We didnt borrow any code or ideas from external sources except those provided by the course. (miss veranderdt dat)
+Image source: ...
 
