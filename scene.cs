@@ -70,7 +70,7 @@ namespace Template
 			camera = new Camera(new Vector3(0, 0, 0), 120, new Vector3(0, 0, 1));
 			maxReflect = 10000;
 			Sphere s1 = new Sphere(new Vector3(-3f, 0, 6f), 1f, new Vector3(1,0,0));
-			Sphere s2 = new Sphere(new Vector3(0, 0, 6f), 1f);
+			Sphere s2 = new Sphere(new Vector3(0, 0, 6), 1f);
 			Sphere s3 = new Sphere(new Vector3(3f, 0, 6f), 1f, new Vector3(0, 0, 1));
 			Plane p1 = new Plane(new Vector3(0, 1, 0), -2);
 			Light l1 = new Light(new Vector3(5f, 0, 6f), 5f);
